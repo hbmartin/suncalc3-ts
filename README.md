@@ -1,8 +1,8 @@
 
-SunCalc
+SunCalc2
 =======
 
-[![Build Status](https://travis-ci.org/mourner/suncalc.svg?branch=master)](https://travis-ci.org/mourner/suncalc)
+[![Build Status](https://travis-ci.org/andiling/suncalc2.svg?branch=master)](https://travis-ci.org/andiling/suncalc2)
 
 SunCalc is a tiny BSD-licensed JavaScript library for calculating sun position,
 sunlight phases (times for sunrise, sunset, dusk, etc.),
