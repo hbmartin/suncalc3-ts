@@ -1,8 +1,8 @@
 {
-  "name": "suncalc",
-  "version": "1.8.0",
+  "name": "suncalc2",
+  "version": "1.8.1",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
-  "homepage": "https://github.com/mourner/suncalc",
+  "homepage": "https://github.com/andiling/suncalc2",
   "keywords": [
     "sun",
     "astronomy",
@@ -17,9 +17,9 @@
   "author": "Vladimir Agafonkin",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mourner/suncalc.git"
+    "url": "git://github.com/andiling/suncalc2.git"
   },
-  "main": "suncalc.js",
+  "main": "suncalc2.js",
   "devDependencies": {
     "eslint": "^3.12.2",
     "eslint-config-mourner": "^2.0.1",
@@ -38,7 +38,7 @@
     }
   },
   "scripts": {
-    "pretest": "eslint suncalc.js test.js",
+    "pretest": "eslint suncalc2.js test.js",
     "test": "tap test.js",
     "cov": "tap test.js --cov"
   },

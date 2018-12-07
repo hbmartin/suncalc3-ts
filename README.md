@@ -36,11 +36,11 @@ var sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
 SunCalc is also available as an NPM package:
 
 ```bash
-$ npm install suncalc
+$ npm install suncalc2
 ```
 
 ```js
-var SunCalc = require('suncalc');
+var SunCalc = require('suncalc2');
 ```
 
 
@@ -154,6 +154,11 @@ By default, it will search for moon rise and set during local user's day (frou 0
 If `inUTC` is set to true, it will instead search the specified date from 0 to 24 UTC hours.
 
 ## Changelog
+
+#### 1.8.1 &andiling; Dec 07, 2018
+
+- Nadir moved from past to future
+
 
 #### 1.8.0 &mdash; Dec 22, 2016
 
