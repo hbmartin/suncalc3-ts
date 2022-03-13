@@ -1,0 +1,13 @@
+.DS_Store
+node_modules/
+node_modules/*
+Thumbs.db
+package-lock.json
+dev_*
+Backup/
+Backup/*
+backup/
+backup/*
+temp/
+temp/*
+suncalc_org.js
