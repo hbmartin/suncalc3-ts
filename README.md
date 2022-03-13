@@ -55,13 +55,10 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 
 ## changed in this library
 
-|-------------------------------------|---------------------------|
 | function names of original SunCalc  | changes in this library   |
 |-------------------------------------|---------------------------|
 | SunCalc.getTimes                    | SunCalc.getSunTimes       |
-|-------------------------------------|---------------------------|
 
-|----------------------------------------|---------------------------|
 | name of the manes of original SunCalc  | changes in this library   |
 |----------------------------------------|---------------------------|
 | sunrise                                | sunriseEnd                |
@@ -72,8 +69,6 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 | nightEnd                               | astronomicalDawn          |
 | goldenHour                             | goldenHourDuskStart       |
 | goldenHourEnd                          | goldenHourDawnEnd         |
-|----------------------------------------|---------------------------|
-
 
 ## Usage example
 
