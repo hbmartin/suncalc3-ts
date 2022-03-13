@@ -1,6 +1,6 @@
 {
   "name": "suncalc3",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
   "homepage": "https://github.com/hypnos3/suncalc3",
   "keywords": [
@@ -35,11 +35,13 @@
     "url": "git://github.com/hypnos3/suncalc3.git"
   },
   "main": "suncalc.js",
+  "types": "suncalc.d.ts",
   "devDependencies": {
     "eslint": ">=8.11.0",
     "eslint-plugin-json": ">=3.1.0",
     "eslint-plugin-node": ">=11.1.0",
-    "tape": "^5.5.2"
+    "tape": "^5.5.2",
+    "typescript":"^4.6.2"
   },
   "files": [
     "suncalc.js"
@@ -47,7 +49,9 @@
   "scripts": {
     "pretest": "eslint suncalc.js test.js",
     "test": "node test.js",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "tsc && eslint suncalc.js test.js && npm test",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
   },
   "jshintConfig": {
     "quotmark": "single",

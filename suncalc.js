@@ -165,8 +165,6 @@
 
 (function () {
     'use strict';
-    const util = require('util'); // eslint-disable-line no-unused-vars
-
     // sun calculations are based on http://aa.quae.nl/en/reken/zonpositie.html formulas
 
     // shortcuts for easier to read formulas
@@ -487,6 +485,7 @@
         if (isNaN(lng)) {
             throw new Error('longitude missing');
         }
+        // @ts-ignore
         const t = new Date(dateValue);
         if (inUTC) {
             t.setUTCHours(12, 0, 0, 0);

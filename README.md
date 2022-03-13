@@ -41,6 +41,7 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 		- [Moon rise and set times](#moon-rise-and-set-times)
 		- [Moon transit](#moon-transit)
 	- [Changelog](#changelog)
+			- [2.0.1 &mdash; March 13, 2022](#201--march-13-2022)
 			- [2.0.0 &mdash; March 13, 2022](#200--march-13-2022)
 			- [1.8.0 &mdash; Dec 22, 2016](#180--dec-22-2016)
 			- [1.7.0 &mdash; Nov 11, 2015](#170--nov-11-2015)
@@ -512,9 +513,14 @@ Returns an object with the following properties:
 
 ## Changelog
 
+#### 2.0.1 &mdash; March 13, 2022
+
+- added type definitions
+
 #### 2.0.0 &mdash; March 13, 2022
 
 - published as suncalc3 after this library was used by my own with various changes to the original one
+- added getSolarTime and moonTransit
 
 #### 1.8.0 &mdash; Dec 22, 2016
 
