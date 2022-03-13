@@ -3,7 +3,6 @@ SunCalc
 =======
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/hypnos3/suncalc3/graphs/commit-activity)
 [![npm version](https://badge.fury.io/js/suncalc3.svg)](https://badge.fury.io/js/suncalc3)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Issues](https://img.shields.io/github/issues/hypnos3/suncalc3.svg?style=flat-square)](https://github.com/hypnos3/suncalc3/issues)
 [![code style](https://img.shields.io/badge/Code%20Style-eslint-green.svg)](https://eslint.org/)
 [![NPM](https://nodei.co/npm/suncalc3.png)](https://nodei.co/npm/suncalc3/)
