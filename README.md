@@ -93,7 +93,7 @@ $ npm install suncalc
 ```
 
 ```js
-let SunCalc = require('suncalc');
+let SunCalc = require('suncalc3');
 ```
 
 ## Reference
