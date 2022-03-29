@@ -7,16 +7,27 @@ const SunCalc = require('./suncalc');
 const t = require('tape');
 
 /** get the nearest value */
-function near(val1, val2, margin) {
-    return Math.abs(val1 - val2) < (margin || 1E-15);
+function near(valIs, valCmp, margin) {
+    const result = Math.abs(valIs - valCmp) < (margin || 1E-15);
+    if (!result) {
+        // eslint-disable-next-line no-console
+        console.log('is     = ' + valIs);
+        // eslint-disable-next-line no-console
+        console.log('should = ' + valCmp);
+        // eslint-disable-next-line no-console
+        console.log('diff   = ' + Math.abs(valIs - valCmp));
+    }
+    return result;
 }
 
-const date = new Date('2013-03-05UTC');
+const date = new Date(Date.UTC(2013, 2, 5, 0, 0, 0 ,0 )); // '2013-03-05UTC'
+// https://www.suncalc.org/#/50.5,30.5,8/2013.03.06/11:00/1/0
 const lat = 50.5; // 50° 30'
 const lng = 30.5; // 30° 30'
 const height = 2000;
 
-const lat2 = -34; // 34° - southern hemisphere
+// https://www.suncalc.org/#/-34,151,8/2013.03.06/11:00/1/0
+const lat2 = -34; // -34° - southern hemisphere
 const lng2 = 151; // 151° - southern hemisphere
 
 const testTimes = {
@@ -81,6 +92,8 @@ t.test('getPosition returns azimuth and altitude for the given time and location
     } */
     t.ok(near(sunPos.azimuth, 0.6412750628729547), 'azimuth');
     t.ok(near(sunPos.altitude, -0.7000406838781611), 'altitude');
+    t.ok(near(sunPos.azimuthDegrees, 36.83, 0.6), 'azimuthDegrees');
+    t.ok(near(sunPos.altitudeDegrees, -39.59, 0.6), 'altitudeDegrees');
     t.end();
 });
 
@@ -95,8 +108,11 @@ t.test('getPosition returns azimuth and altitude for the given time and location
         zenithDegrees: 40.48329328468754,
         declination: -0.10749006348638547
     } */
-    t.ok(near(sunPos.azimuth, 0.9416994558253937), 'azimuth');
-    t.ok(near(sunPos.altitude, 0.8642295669265889), 'altitude');
+    // console.log(sunPos);
+    t.ok(near(sunPos.azimuth, 0.9416994558253937, 0.004), 'azimuth');
+    t.ok(near(sunPos.altitude, 0.8642295669265889, 0.004), 'altitude');
+    t.ok(near(sunPos.azimuthDegrees, 53.34, 0.8), 'azimuthDegrees');
+    t.ok(near(sunPos.altitudeDegrees, 49.15, 0.6), 'altitudeDegrees');
     t.end();
 });
 

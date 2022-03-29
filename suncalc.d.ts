@@ -518,5 +518,9 @@ export type IMoonTimes = {
      * - is true if the moon is always _below_ the horizon
      */
     alwaysDown: boolean;
+    /**
+     * - Date of the highest position, only avalílable if set and rise is not NaN
+     */
+    highest?: Date;
 };
 //# sourceMappingURL=suncalc.d.ts.map

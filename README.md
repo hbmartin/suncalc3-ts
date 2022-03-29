@@ -40,6 +40,7 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 		- [Moon rise and set times](#moon-rise-and-set-times)
 		- [Moon transit](#moon-transit)
 	- [Changelog](#changelog)
+			- [2.0.2 &mdash; March 29, 2022](#202--march-29-2022)
 			- [2.0.1 &mdash; March 13, 2022](#201--march-13-2022)
 			- [2.0.0 &mdash; March 13, 2022](#200--march-13-2022)
 			- [1.8.0 &mdash; Dec 22, 2016](#180--dec-22-2016)
@@ -506,6 +507,9 @@ Returns an object with the following properties:
 ```
 
 ## Changelog
+
+#### 2.0.2 &mdash; March 29, 2022
+- type definitions update
 
 #### 2.0.1 &mdash; March 13, 2022
 

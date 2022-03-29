@@ -161,6 +161,7 @@
  * @property {Date|NaN} set - a Date object if the moon is setting on the given Date, otherwise NaN
  * @property {boolean} alwaysUp - is true if the moon never rises/sets and is always _above_ the horizon during the day
  * @property {boolean} alwaysDown - is true if the moon is always _below_ the horizon
+ * @property {Date} [highest] - Date of the highest position, only avalílable if set and rise is not NaN
  */
 
 (function () {
