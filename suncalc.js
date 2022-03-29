@@ -161,6 +161,7 @@
  * @property {Date|NaN} set - a Date object if the moon is setting on the given Date, otherwise NaN
  * @property {boolean} alwaysUp - is true if the moon never rises/sets and is always _above_ the horizon during the day
  * @property {boolean} alwaysDown - is true if the moon is always _below_ the horizon
+ * @property {Date} [highest] - Date of the highest position, only avalílable if set and rise is not NaN
  */
 
 (function () {
@@ -174,8 +175,6 @@
     const asin = Math.asin;
     const atan = Math.atan2;
     const acos = Math.acos;
-    const rad = Math.PI / 180;
-    const degr = 180 / Math.PI;
 
     // date/time constants and conversions
     const dayMs = 86400000; // 1000 * 60 * 60 * 24;
@@ -184,6 +183,24 @@
 
     const lunarDaysMs = 2551442778; // The duration in days of a lunar cycle is 29.53058770576
     const firstNewMoon2000 = 947178840000; // first newMoon in the year 2000 2000-01-06 18:14
+
+    /**
+     * radians to decimal grad
+     * @param {number} rad angle in radians
+     * @return {number} angle in decimal grad
+     */
+    function toDec(rad) {
+        return rad * ( 180 / Math.PI );
+    }
+
+    /**
+     * decimal grad to radians
+     * @param {number} dec angle in decimal grad
+     * @return {number} angle in radians
+     */
+    function toRad(dec) {
+        return dec * ( Math.PI / 180 );
+    }
 
     /**
      * convert date from Julian calendar
@@ -205,7 +222,7 @@
 
     // general calculations for position
 
-    const e = rad * 23.4397; // obliquity of the Earth
+    const e = toRad(23.4397); // obliquity of the Earth
 
     /**
      * get right ascension
@@ -256,7 +273,7 @@
      * @returns {number}
      */
     function siderealTime(d, lw) {
-        return rad * (280.16 + 360.9856235 * d) - lw;
+        return toRad(280.16 + 360.9856235 * d) - lw;
     }
 
     /**
@@ -280,7 +297,7 @@
      * @returns {number}
      */
     function solarMeanAnomaly(d) {
-        return rad * (357.5291 + 0.98560028 * d);
+        return toRad(357.5291 + 0.98560028 * d);
     }
 
     /**
@@ -289,9 +306,9 @@
      * @returns {number}
      */
     function eclipticLongitude(M) {
-        const C = rad * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M));
+        const C = toRad(1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M));
         // equation of center
-        const P = rad * 102.9372; // perihelion of the Earth
+        const P = toRad(102.9372); // perihelion of the Earth
         return M + C + P + Math.PI;
     }
 
@@ -330,8 +347,9 @@
         if (dateValue instanceof Date) {
             dateValue = dateValue.valueOf();
         }
-        const lw = rad * -lng;
-        const phi = rad * lat;
+        const lw = toRad(-lng);
+        const phi = toRad(lat);
+
         const d = toDays(dateValue);
         const c = sunCoords(d);
         const H = siderealTime(d, lw) - c.ra;
@@ -343,9 +361,9 @@
             azimuth,
             altitude,
             zenith: (90*Math.PI/180) - altitude,
-            azimuthDegrees: degr * azimuth,
-            altitudeDegrees: degr * altitude,
-            zenithDegrees: 90 - (degr * altitude),
+            azimuthDegrees: toDec(azimuth),
+            altitudeDegrees: toDec(altitude),
+            zenithDegrees: 90 - toDec(altitude),
             declination: c.dec
         };
     };
@@ -493,8 +511,8 @@
             t.setHours(12, 0, 0, 0);
         }
 
-        const lw = rad * -lng;
-        const phi = rad * lat;
+        const lw = toRad(-lng);
+        const phi = toRad(lat);
         const dh = observerAngle(height || 0);
         const d = toDays(t.valueOf());
         const n = julianCycle(d, lw);
@@ -530,7 +548,7 @@
         for (let i = 0, len = sunTimes.length; i < len; i += 1) {
             const time = sunTimes[i];
             const sa = time.angle;
-            const h0 = (sa + dh) * rad;
+            const h0 = toRad(sa + dh);
             let valid = true;
 
             let Jset = getSetJ(h0, lw, phi, dec, n, M, L);
@@ -607,7 +625,7 @@
             throw new Error('elevationAngle missing');
         }
         if (degree) {
-            elevationAngle = elevationAngle * rad;
+            elevationAngle = toRad(elevationAngle);
         }
         const t = new Date(dateValue);
         if (inUTC) {
@@ -615,8 +633,8 @@
         } else {
             t.setHours(12, 0, 0, 0);
         }
-        const lw = rad * -lng;
-        const phi = rad * lat;
+        const lw = toRad(-lng);
+        const phi = toRad(lat);
         const dh = observerAngle(height || 0);
         const d = toDays(t.valueOf());
         const n = julianCycle(d, lw);
@@ -626,7 +644,7 @@
         const dec = declination(L, 0);
         const Jnoon = solarTransitJ(ds, M, L);
 
-        const h0 = (elevationAngle - 0.833 + dh) * rad;
+        const h0 = toRad(elevationAngle - 0.833 + dh);
 
         const Jset = getSetJ(h0, lw, phi, dec, n, M, L);
         const Jrise = Jnoon - (Jset - Jnoon);
@@ -675,11 +693,11 @@
             throw new Error('longitude missing');
         }
         if (degree) {
-            nazimuth = nazimuth * rad;
+            nazimuth = toRad(nazimuth);
         }
         const date = new Date(dateValue);
-        const lw = rad * -lng;
-        const phi = rad * lat;
+        const lw = toRad(-lng);
+        const phi = toRad(lat);
 
         let dateVal = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0).valueOf();
         let addval = dayMs; // / 2);
@@ -719,7 +737,7 @@
         const diff = (date.getTime() - start.getTime()) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
         const dayOfYear = Math.floor(diff / dayMs);
 
-        const b = 360 / 365 * (dayOfYear - 81) * rad;
+        const b = 360 / 365 * toRad(dayOfYear - 81);
         const equationOfTime = 9.87 * sin(2 * b) - 7.53 * cos(b) - 1.5 * sin(b);
         const localSolarTimeMeridian = 15 * utcOffset;
         const timeCorrection = equationOfTime + 4 * (lng - localSolarTimeMeridian);
@@ -737,11 +755,11 @@
      * @param {number} d number of days
      */
     function moonCoords(d) {
-        const L = rad * (218.316 + 13.176396 * d); // ecliptic longitude
-        const M = rad * (134.963 + 13.064993 * d); // mean anomaly
-        const F = rad * (93.272 + 13.229350 * d); // mean distance
-        const l = L + rad * 6.289 * sin(M); // longitude
-        const b = rad * 5.128 * sin(F); // latitude
+        const L = toRad(218.316 + 13.176396 * d); // ecliptic longitude
+        const M = toRad(134.963 + 13.064993 * d); // mean anomaly
+        const F = toRad(93.272 + 13.229350 * d); // mean distance
+        const l = L + toRad(6.289 * sin(M)); // longitude
+        const b =toRad(5.128 * sin(F)); // latitude
         const dt = 385001 - 20905 * cos(M); // distance to the moon in km
 
         return {
@@ -769,8 +787,8 @@
         if (dateValue instanceof Date) {
             dateValue = dateValue.valueOf();
         }
-        const lw = rad * -lng;
-        const phi = rad * lat;
+        const lw = toRad(-lng);
+        const phi = toRad(lat);
         const d = toDays(dateValue);
         const c = moonCoords(d);
         const H = siderealTime(d, lw) - c.ra;
@@ -785,11 +803,11 @@
         return {
             azimuth,
             altitude,
-            azimuthDegrees: degr * azimuth,
-            altitudeDegrees: degr * altitude,
+            azimuthDegrees: toDec(azimuth),
+            altitudeDegrees: toDec(altitude),
             distance: c.dist,
             parallacticAngle: pa,
-            parallacticAngleDegrees: degr * pa
+            parallacticAngleDegrees: toDec(pa)
         };
     };
 
@@ -1014,7 +1032,7 @@
         dateValue = t.valueOf();
         // console.log(`getMoonTimes lat=${lat} lng=${lng} dateValue=${dateValue} t=${t}`);
 
-        const hc = 0.133 * rad;
+        const hc = toRad(0.133);
         let h0 = SunCalc.getMoonPosition(dateValue, lat, lng).altitude - hc;
         let rise; let set; let ye; let d; let roots; let x1; let x2; let dx;
 
