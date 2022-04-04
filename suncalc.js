@@ -416,6 +416,11 @@
             if (isValid) {
                 const angleDeg = (degree === false ?  (angleAltitude  * ( 180 / Math.PI )) : angleAltitude);
                 sunTimes.push({angle: angleDeg, riseName, setName, risePos, setPos});
+                for (let i = suntimesDeprecated.length -1; i >= 0; i--) {
+                    if (suntimesDeprecated[i][0] === riseName || suntimesDeprecated[i][0] === setName) {
+                        suntimesDeprecated.splice(i, 1);
+                    }
+                }
                 return true;
             }
         }

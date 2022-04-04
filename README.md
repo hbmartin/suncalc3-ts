@@ -40,6 +40,7 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 		- [Moon rise and set times](#moon-rise-and-set-times)
 		- [Moon transit](#moon-transit)
 	- [Changelog](#changelog)
+			- [2.0.5 &mdash; April 04, 2022](#205--april-04-2022)
 			- [2.0.4 &mdash; April 04, 2022](#204--april-04-2022)
 			- [2.0.2 &mdash; March 29, 2022](#202--march-29-2022)
 			- [2.0.1 &mdash; March 13, 2022](#201--march-13-2022)
@@ -243,6 +244,8 @@ Adds a custom time when the sun reaches the given angle to results returned by `
   - `angleInDegrees` must be a number
   - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
   - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
+
+Additional this function removes all items from `SunCalc.timesDeprecated` array where the `riseName` or `setName` matches the `alternameName` to prevent errors.
 
 ```javascript
 /**
@@ -548,9 +551,12 @@ Returns an object with the following properties:
 
 ## Changelog
 
+#### 2.0.5 &mdash; April 04, 2022
+- function `SunCalc.addTime(...)` removes all items from `SunCalc.timesDeprecated` array where the new rise or set name matches the `alternameName`.
+
 #### 2.0.4 &mdash; April 04, 2022
-- added `addDeprecatedTimeName` function
-- renamed `timesAlternate` to `timesDeprecated`
+- added `SunCalc.addDeprecatedTimeName(...)` function
+- renamed `SunCalc.timesAlternate` array to `SunCalc.timesDeprecated`
 - added validation to function `addTime`
 
 #### 2.0.2 &mdash; March 29, 2022
