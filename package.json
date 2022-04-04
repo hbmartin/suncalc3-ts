@@ -1,6 +1,6 @@
 {
   "name": "suncalc3",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
   "homepage": "https://github.com/hypnos3/suncalc3",
   "keywords": [

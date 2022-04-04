@@ -13,7 +13,7 @@ sunlight phases (times for sunrise, sunset, dusk, etc.),
 moon position and lunar phase for the given location and time,
 created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner))
 as a part of the [SunCalc.net project](http://suncalc.net).
-This version is reworked and enhanced by [@hypnos3](https://github.com/hypnos3)
+This version is reworked and enhanced by [@hypnos3](https://github.com/hypnos3). The output of the function is changed in the most times to objects with enhanced properies.
 
 Most calculations are based on the formulas given in the excellent Astronomy Answers articles
 about [position of the sun](http://aa.quae.nl/en/reken/zonpositie.html)
@@ -29,7 +29,7 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 	- [Usage example](#usage-example)
 	- [Reference](#reference)
 		- [Sunlight times](#sunlight-times)
-			- [adding own Sunlight times](#adding-own-sunlight-times)
+			- [adding / getting own Sunlight times](#adding--getting-own-sunlight-times)
 			- [get specific Sunlight time](#get-specific-sunlight-time)
 			- [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
 			- [getting solar time](#getting-solar-time)
@@ -71,6 +71,8 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 | goldenHour                             | goldenHourDuskStart       |
 | goldenHourEnd                          | goldenHourDawnEnd         |
 
+Additional are the output of the function is changed in the most times to objects with more properies. Also JSDOC is added ans type script definitions.
+
 ## Usage example
 
 ```javascript
@@ -108,7 +110,7 @@ let SunCalc = require('suncalc3');
  * @param {number} lat latitude for calculating sun-times
  * @param {number} lng longitude for calculating sun-times
  * @param {number} [height=0]  the observer height (in meters) relative to the horizon
- * @param {boolean} [addDeprecated=false] if true to times will be added to the object for old names
+ * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
  * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
  * @return {ISunTimeList} result object of sunTime
  */
@@ -218,24 +220,61 @@ Each of the properties will be an object with the following properties:
 */
 ```
 
-#### adding own Sunlight times
+#### adding / getting own Sunlight times
 
 ```javascript
 /** adds a custom time to the times config
- * @param {number} angle - angle of the sun position in degrees
+ * @param {number} angleAltitude - angle of Altitude/elevation above the horizont of the sun in degrees
  * @param {string} riseName - name of sun rise (morning name)
  * @param {string} setName  - name of sun set (evening name)
  * @param {number} [risePos]  - (optional) position at rise (morning)
  * @param {number} [setPos]  - (optional) position at set (evening)
+ * @param {boolean} [degree=true] defines if the elevationAngle is in degree not in radians
+ * @return {Boolean} true if new time could be added, false if not (parameter missing; riseName or setName already existing)
  */
 SunCalc.addTime(angleInDegrees, riseName, setName, risePos, setPos)
 ```
 
 Adds a custom time when the sun reaches the given angle to results returned by `SunCalc.getSunTimes`.
 
-`SunCalc.times` property contains all currently defined times.
+- the function tests for validity of the given parameters
+  - `riseName` and `setName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+  - `angleInDegrees` must be a number
+  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+  - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
 
-`SunCalc.timesAlternate` property contains all deprecated time names.
+```javascript
+/**
+ * @typedef ISunTimeNames
+ * @type {Object}
+ * @property {number} angle     -   angle of the sun position in degrees
+ * @property {string} riseName  -   name of sun rise (morning name)
+ * @property {string} setName   -   name of sun set (evening name)
+ * @property {number} [risePos] -   (optional) position at rise
+ * @property {number} [setPos]  -   (optional) position at set
+ */
+```
+
+`SunCalc.times` property contains all currently defined times of type `Array.<ISunTimeNames>`.
+
+```javascript
+/**
+ * add an alternate name for a sun time
+ * @param {string} alternameName    - alternate or deprecated time name
+ * @param {string} originalName     - original time name from SunCalc.times array
+ * @return {Boolean} true if could be added, false if not (parameter missing; originalName does not exists; alternameName already existis)
+ */
+SunCalc.addDeprecatedTimeName(alternameName, originalName)
+```
+
+Add a deprecated name
+
+- the function tests for validity of the given parameters
+  - `alternameName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+  - `alternameName` must not correspond to a `riseName` or `setName` in the array `SunCalc.times`
+
+`SunCalc.timesDeprecated` property contains all deprecated time names as an `Array.<[string, string]>` - `Array.<deprecatedname, originalName>`.
 
 #### get specific Sunlight time
 

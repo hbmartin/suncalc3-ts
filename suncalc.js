@@ -370,7 +370,7 @@
     /** alternate time names for backward compatibility
      * @type {Array.<[string, string]>}
     */
-    const sunTimesAlternate = SunCalc.timesAlternate = [
+    const suntimesDeprecated = SunCalc.timesDeprecated = [
         ['dawn', 'civilDawn'],
         ['dusk', 'civilDusk'],
         ['nightEnd', 'astronomicalDawn'],
@@ -384,16 +384,76 @@
     ];
 
     /** adds a custom time to the times config
-     * @param {number} angle - angle of the sun position in degrees
+     * @param {number} angleAltitude - angle of Altitude/elevation above the horizont of the sun in degrees
      * @param {string} riseName - name of sun rise (morning name)
      * @param {string} setName  - name of sun set (evening name)
      * @param {number} [risePos]  - (optional) position at rise (morning)
      * @param {number} [setPos]  - (optional) position at set (evening)
+     * @param {boolean} [degree=true] defines if the elevationAngle is in degree not in radians
+     * @return {Boolean} true if new time could be added, false if not (parameter missing; riseName or setName already existing)
      */
-    SunCalc.addTime = function (angle, riseName, setName, risePos, setPos) {
-        sunTimes.push({angle, riseName, setName, risePos, setPos});
+    SunCalc.addTime = function (angleAltitude, riseName, setName, risePos, setPos, degree) {
+        let isValid = (typeof riseName === 'string') && (riseName.length > 0) &&
+                      (typeof setName === 'string') && (setName.length > 0) &&
+                      (typeof angleAltitude === 'number');
+        if (isValid) {
+            const EXP = /^(?![0-9])[a-zA-Z0-9$_]+$/;
+            // check for invalid names
+            for (let i=0; i<sunTimes.length; ++i) {
+                if (!EXP.test(riseName) ||
+                    riseName === sunTimes[i].riseName ||
+                    riseName === sunTimes[i].setName) {
+                    isValid = false;
+                    break;
+                }
+                if (!EXP.test(setName) ||
+                    setName === sunTimes[i].riseName ||
+                    setName === sunTimes[i].setName) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (isValid) {
+                const angleDeg = (degree === false ?  (angleAltitude  * ( 180 / Math.PI )) : angleAltitude);
+                sunTimes.push({angle: angleDeg, riseName, setName, risePos, setPos});
+                return true;
+            }
+        }
+        return false;
     };
 
+    /**
+     * add an alternate name for a sun time
+     * @param {string} alternameName    - alternate or deprecated time name
+     * @param {string} originalName     - original time name from SunCalc.times array
+     * @return {Boolean} true if could be added, false if not (parameter missing; originalName does not exists; alternameName already existis)
+     */
+    SunCalc.addDeprecatedTimeName = function (alternameName, originalName) {
+        let isValid = (typeof alternameName === 'string') && (alternameName.length > 0) &&
+                      (typeof originalName === 'string') && (originalName.length > 0);
+        if (isValid) {
+            let hasOrg = false;
+            const EXP = /^(?![0-9])[a-zA-Z0-9$_]+$/;
+            // check for invalid names
+            for (let i=0; i<sunTimes.length; ++i) {
+                if (!EXP.test(alternameName) ||
+                    alternameName === sunTimes[i].riseName ||
+                    alternameName === sunTimes[i].setName) {
+                    isValid = false;
+                    break;
+                }
+                if (originalName === sunTimes[i].riseName ||
+                    originalName === sunTimes[i].setName) {
+                    hasOrg = true;
+                }
+            }
+            if (isValid && hasOrg) {
+                suntimesDeprecated.push([alternameName, originalName]);
+                return true;
+            }
+        }
+        return false;
+    };
     // calculations for sun times
 
     const J0 = 0.0009;
@@ -474,7 +534,7 @@
      * @param {number} lat latitude for calculating sun-times
      * @param {number} lng longitude for calculating sun-times
      * @param {number} [height=0]  the observer height (in meters) relative to the horizon
-     * @param {boolean} [addDeprecated=false] if true to times will be added to the object for old names
+     * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
      * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
      * @return {ISunTimeList} result object of sunTime
      */
@@ -572,8 +632,8 @@
 
         if (addDeprecated) {
             // for backward compatibility
-            for (let i = 0, len = sunTimesAlternate.length; i < len; i += 1) {
-                const time = sunTimesAlternate[i];
+            for (let i = 0, len = suntimesDeprecated.length; i < len; i += 1) {
+                const time = suntimesDeprecated[i];
                 result[time[0]] = Object.assign({}, result[time[1]]);
                 result[time[0]].deprecated = true;
                 result[time[0]].nameOrg = result[time[1]].pos;

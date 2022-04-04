@@ -7,22 +7,31 @@
 */
 export function getPosition(dateValue: number | Date, lat: number, lng: number): ISunPosition;
 export var times: Array<ISunTimeNames>;
-export var timesAlternate: Array<[string, string]>;
+export var timesDeprecated: Array<[string, string]>;
 /** adds a custom time to the times config
- * @param {number} angle - angle of the sun position in degrees
+ * @param {number} angleAltitude - angle of Altitude/elevation above the horizont of the sun in degrees
  * @param {string} riseName - name of sun rise (morning name)
  * @param {string} setName  - name of sun set (evening name)
  * @param {number} [risePos]  - (optional) position at rise (morning)
  * @param {number} [setPos]  - (optional) position at set (evening)
+ * @param {boolean} [degree=true] defines if the elevationAngle is in degree not in radians
+ * @return {Boolean} true if new time could be added, false if not (parameter missing; riseName or setName already existing)
  */
-export function addTime(angle: number, riseName: string, setName: string, risePos?: number, setPos?: number): void;
+export function addTime(angleAltitude: number, riseName: string, setName: string, risePos?: number, setPos?: number, degree?: boolean): boolean;
+/**
+ * add an alternate name for a sun time
+ * @param {string} alternameName    - alternate or deprecated time name
+ * @param {string} originalName     - original time name from SunCalc.times array
+ * @return {Boolean} true if could be added, false if not (parameter missing; originalName does not exists; alternameName already existis)
+ */
+export function addDeprecatedTimeName(alternameName: string, originalName: string): boolean;
 /**
  * calculates sun times for a given date and latitude/longitude
  * @param {number|Date} dateValue Date object or timestamp for calculating sun-times
  * @param {number} lat latitude for calculating sun-times
  * @param {number} lng longitude for calculating sun-times
  * @param {number} [height=0]  the observer height (in meters) relative to the horizon
- * @param {boolean} [addDeprecated=false] if true to times will be added to the object for old names
+ * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
  * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
  * @return {ISunTimeList} result object of sunTime
  */
