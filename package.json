@@ -2,7 +2,34 @@
   "name": "suncalc2",
   "version": "1.8.1",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
-  "homepage": "https://github.com/andiling/suncalc2",
+  "author": "Vladimir Agafonkin",
+  "repository": "andiling/suncalc2",
+  "homepage": "https://github.com/andiling/suncalc2#readme",
+  "bugs": {
+    "url": "https://github.com/andiling/suncalc2/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "18.x || 20.x"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "freshlock": "rm -rf node_modules/ && rm .yarn/install-state.gz && rm yarn.lock && yarn",
+    "eslint-check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint-fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "prettier-check": "prettier --check .",
+    "prettier-fix": "prettier --write .",
+    "test": "NODE_OPTIONS='--loader=ts-node/esm' mocha",
+    "build": "tsc"
+  },
+  "files": [
+    "src/**/*",
+    "dist/**/*"
+  ],
   "keywords": [
     "sun",
     "astronomy",
@@ -14,37 +41,20 @@
     "moon",
     "illumination"
   ],
-  "author": "Vladimir Agafonkin",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/andiling/suncalc2.git"
-  },
-  "main": "suncalc2.js",
   "devDependencies": {
-    "eslint": "^3.12.2",
-    "eslint-config-mourner": "^2.0.1",
-    "tap": "^8.0.1"
+    "@tsconfig/next": "^2.0.3",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "mocha": "^10.4.0",
+    "prettier": "^3.2.5",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5"
   },
-  "eslintConfig": {
-    "extends": "mourner",
-    "rules": {
-      "indent": 0,
-      "array-bracket-spacing": 0,
-      "strict": 0,
-      "brace-style": 0
-    },
-    "env": {
-      "amd": true
-    }
-  },
-  "scripts": {
-    "pretest": "eslint suncalc2.js test.js",
-    "test": "tap test.js",
-    "cov": "tap test.js --cov"
-  },
-  "jshintConfig": {
-    "quotmark": "single",
-    "trailing": true,
-    "unused": true
-  }
+  "packageManager": "yarn@4.2.2"
 }
