@@ -1,12 +1,12 @@
 {
-  "name": "suncalc2",
+  "name": "suncalc-ts",
   "version": "2.0.0",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
   "author": "Vladimir Agafonkin",
-  "repository": "andiling/suncalc2",
-  "homepage": "https://github.com/andiling/suncalc2#readme",
+  "repository": "e-adrien/suncalc-ts",
+  "homepage": "https://github.com/e-adrien/suncalc-ts#readme",
   "bugs": {
-    "url": "https://github.com/andiling/suncalc2/issues"
+    "url": "https://github.com/e-adrien/suncalc-ts/issues"
   },
   "publishConfig": {
     "access": "public"

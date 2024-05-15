@@ -1,4 +1,4 @@
-# SunCalc2
+# SunCalc TS
 
 ## Changelog
 

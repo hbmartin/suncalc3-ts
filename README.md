@@ -1,4 +1,4 @@
-# SunCalc2
+# SunCalc TS
 
 [![QC Checks](https://github.com/e-adrien/suncalc-ts/actions/workflows/quality-control.yml/badge.svg)](https://github.com/e-adrien/suncalc-ts/actions/workflows/quality-control.yml)
 
@@ -33,11 +33,11 @@ var sunriseAzimuth = (sunrisePos.azimuth * 180) / Math.PI;
 SunCalc is also available as an NPM package:
 
 ```bash
-$ npm install suncalc2
+$ npm install suncalc-ts
 ```
 
 ```js
-var SunCalc = require("suncalc2");
+var SunCalc = require("suncalc-ts");
 ```
 
 ## Reference
