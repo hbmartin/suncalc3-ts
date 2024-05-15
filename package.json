@@ -1,6 +1,6 @@
 {
   "name": "suncalc2",
-  "version": "1.8.1",
+  "version": "2.0.0",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
   "author": "Vladimir Agafonkin",
   "repository": "andiling/suncalc2",
