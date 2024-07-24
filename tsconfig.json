@@ -2,13 +2,13 @@
 	"extends": "@tsconfig/next/tsconfig.json",
 	"compilerOptions": {
 		"target": "esnext",
-		"outDir": "./dist",
-		"rootDir": "./src",
+		"outDir": "dist",
+		"rootDir": ".",
 		"sourceMap": false,
 		"noEmit": false,
 		"declaration": true,
-		"declarationDir": "./dist"
+		"declarationDir": "dist"
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "**/*.spec.ts"]
+	"include": ["src/**/*", "tests/**/*"],
+	"exclude": ["node_modules"]
 }

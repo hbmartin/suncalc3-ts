@@ -1,5 +1,5 @@
 # Generated files
-tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
 dist/
 
 # Yarn & node.js dependencies

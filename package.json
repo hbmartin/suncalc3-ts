@@ -12,19 +12,19 @@
     "access": "public"
   },
   "engines": {
-    "node": "18.x || 20.x"
+    "node": "20.x || 22.x"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
     "freshlock": "rm -rf node_modules/ && rm .yarn/install-state.gz && rm yarn.lock && yarn",
-    "eslint-check": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "eslint-fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "eslint-check": "eslint .",
+    "eslint-fix": "eslint . --fix",
     "prettier-check": "prettier --check .",
     "prettier-fix": "prettier --write .",
     "test": "NODE_OPTIONS='--loader=ts-node/esm' mocha",
-    "build": "tsc"
+    "build": "tsc -p tsconfig.build.json"
   },
   "files": [
     "src/**/*",
@@ -42,19 +42,20 @@
     "illumination"
   ],
   "devDependencies": {
+    "@eslint/js": "^9.7.0",
     "@tsconfig/next": "^2.0.3",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.11",
-    "@typescript-eslint/eslint-plugin": "^7.17.0",
-    "@typescript-eslint/parser": "^7.17.0",
-    "eslint": "^8.57.0",
+    "@types/node": "^20.14.12",
+    "eslint": "^9.7.0",
     "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.8.0",
     "mocha": "^10.7.0",
     "prettier": "^3.3.3",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.5",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "8.0.0-alpha.54"
   },
   "packageManager": "yarn@4.3.1"
 }
