@@ -9,5 +9,4 @@ node_modules
 .gitignore
 .prettierignore
 .prettierrc.cjs
-.whitesource
 .yarnrc.yml
