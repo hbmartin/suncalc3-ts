@@ -91,10 +91,10 @@ SunCalc.getPosition(
 
 Returns an object with the following properties:
 
--   `altitude`: sun altitude above the horizon in radians,
-    e.g. `0` at the horizon and `PI/2` at the zenith (straight over your head)
--   `azimuth`: sun azimuth in radians (direction along the horizon, measured from south to west),
-    e.g. `0` is south and `Math.PI * 3/4` is northwest
+- `altitude`: sun altitude above the horizon in radians,
+  e.g. `0` at the horizon and `PI/2` at the zenith (straight over your head)
+- `azimuth`: sun azimuth in radians (direction along the horizon, measured from south to west),
+  e.g. `0` is south and `Math.PI * 3/4` is northwest
 
 ### Moon position
 
@@ -108,10 +108,10 @@ SunCalc.getMoonPosition(
 
 Returns an object with the following properties:
 
--   `altitude`: moon altitude above the horizon in radians
--   `azimuth`: moon azimuth in radians
--   `distance`: distance to moon in kilometers
--   `parallacticAngle`: parallactic angle of the moon in radians
+- `altitude`: moon altitude above the horizon in radians
+- `azimuth`: moon azimuth in radians
+- `distance`: distance to moon in kilometers
+- `parallacticAngle`: parallactic angle of the moon in radians
 
 ### Moon illumination
 
@@ -121,10 +121,10 @@ SunCalc.getMoonIllumination(/*Date*/ timeAndDate);
 
 Returns an object with the following properties:
 
--   `fraction`: illuminated fraction of the moon; varies from `0.0` (new moon) to `1.0` (full moon)
--   `phase`: moon phase; varies from `0.0` to `1.0`, described below
--   `angle`: midpoint angle in radians of the illuminated limb of the moon reckoned eastward from the north point of the disk;
-    the moon is waxing if the angle is negative, and waning if positive
+- `fraction`: illuminated fraction of the moon; varies from `0.0` (new moon) to `1.0` (full moon)
+- `phase`: moon phase; varies from `0.0` to `1.0`, described below
+- `angle`: midpoint angle in radians of the illuminated limb of the moon reckoned eastward from the north point of the disk;
+  the moon is waxing if the angle is negative, and waning if positive
 
 Moon phase value should be interpreted like this:
 
@@ -150,10 +150,10 @@ SunCalc.getMoonTimes(/*Date*/ date, /*Number*/ latitude, /*Number*/ longitude[, 
 
 Returns an object with the following properties:
 
--   `rise`: moonrise time as `Date`
--   `set`: moonset time as `Date`
--   `alwaysUp`: `true` if the moon never rises/sets and is always _above_ the horizon during the day
--   `alwaysDown`: `true` if the moon is always _below_ the horizon
+- `rise`: moonrise time as `Date`
+- `set`: moonset time as `Date`
+- `alwaysUp`: `true` if the moon never rises/sets and is always _above_ the horizon during the day
+- `alwaysDown`: `true` if the moon is always _below_ the horizon
 
 By default, it will search for moon rise and set during local user's day (frou 0 to 24 hours).
 If `inUTC` is set to true, it will instead search the specified date from 0 to 24 UTC hours.
