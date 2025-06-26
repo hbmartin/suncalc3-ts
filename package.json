@@ -1,8 +1,35 @@
 {
-  "name": "suncalc3",
-  "version": "2.0.5",
+  "name": "suncalc-ts",
+  "version": "2.0.9",
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
-  "homepage": "https://github.com/hypnos3/suncalc3",
+  "author": "Vladimir Agafonkin",
+  "repository": "e-adrien/suncalc-ts",
+  "homepage": "https://github.com/e-adrien/suncalc-ts#readme",
+  "bugs": {
+    "url": "https://github.com/e-adrien/suncalc-ts/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "20.x || 22.x || 24.x"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "freshlock": "rm -rf node_modules/ && rm .yarn/install-state.gz && rm yarn.lock && yarn",
+    "eslint-check": "eslint .",
+    "eslint-fix": "eslint . --fix",
+    "prettier-check": "prettier --check .",
+    "prettier-fix": "prettier --write .",
+    "test": "NODE_OPTIONS='--loader=ts-node/esm' mocha",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "files": [
+    "src/**/*",
+    "dist/**/*"
+  ],
   "keywords": [
     "sun",
     "astronomy",
@@ -12,223 +39,22 @@
     "sunset",
     "twilight",
     "moon",
-    "illumination",
-    "solar"
+    "illumination"
   ],
-  "author": {
-    "name": "Hypnos3",
-    "email": "hypnos3@online.de",
-    "url": "https://github.com/hypnos3"
-  },
-  "contributors": [
-    {
-      "name": "Hypnos3",
-      "url": "https://github.com/hypnos3"
-    },
-    {
-      "name": "Vladimir Agafonkin",
-      "url": "https://github.com/mourner"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/hypnos3/suncalc3.git"
-  },
-  "main": "suncalc.js",
-  "types": "suncalc.d.ts",
   "devDependencies": {
-    "eslint": ">=8.12.0",
-    "eslint-plugin-json": ">=3.1.0",
-    "eslint-plugin-node": ">=11.1.0",
-    "tape": "^5.5.2",
-    "typescript":"^4.6.3"
+    "@eslint/js": "^9.27.0",
+    "@tsconfig/node20": "^20.1.5",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "mocha": "^11.5.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "8.33.0"
   },
-  "files": [
-    "suncalc.js"
-  ],
-  "scripts": {
-    "pretest": "eslint suncalc.js test.js",
-    "test": "node test.js",
-    "prepublishOnly": "tsc && eslint suncalc.js test.js && npm test",
-    "build": "tsc --build",
-    "clean": "tsc --build --clean"
-  },
-  "jshintConfig": {
-    "quotmark": "single",
-    "trailing": true,
-    "unused": true
-  },
-  "eslintConfig": {
-    "env": {
-      "es6": true,
-      "node": true,
-      "browser": true,
-      "commonjs": true,
-      "jquery": true,
-      "amd": true
-    },
-    "extends": "eslint:recommended",
-    "settings": {
-      "html/html-extensions": [
-        ".html",
-        ".htm",
-        ".we"
-      ],
-      "html/indent": "+4",
-      "html/report-bad-indent": "error",
-      "import/resolver": {
-        "node": {
-          "extensions": [
-            ".js",
-            ".jsx"
-          ]
-        }
-      }
-    },
-    "globals": {
-      "RED": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
-    "rules": {
-      "indent": [
-        "error",
-        4,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "max-len": [
-        "error",
-        {
-          "code": 250,
-          "ignoreComments": true,
-          "ignoreTrailingComments": true,
-          "ignoreUrls": true,
-          "ignoreRegExpLiterals": true,
-          "ignoreTemplateLiterals": true
-        }
-      ],
-      "no-eq-null": "error",
-      "eqeqeq": "error",
-      "no-else-return": "error",
-      "prefer-arrow-callback": "error",
-      "no-confusing-arrow": [
-        "error",
-        {
-          "allowParens": true
-        }
-      ],
-      "arrow-parens": [
-        "error",
-        "as-needed"
-      ],
-      "no-console": "warn",
-      "no-unused-vars": [
-        "error",
-        {
-          "args": "after-used",
-          "argsIgnorePattern": "^_"
-        }
-      ],
-      "no-unused-expressions": "warn",
-      "no-useless-escape": "warn",
-      "no-constant-condition": "off",
-      "no-multiple-empty-lines": [
-        "error",
-        {
-          "max": 2,
-          "maxEOF": 1
-        }
-      ],
-      "no-var": "error",
-      "object-shorthand": [
-        "error",
-        "always"
-      ],
-      "prefer-const": "error",
-      "prefer-rest-params": "error",
-      "no-useless-concat": "error",
-      "no-template-curly-in-string": "error",
-      "require-jsdoc": "warn",
-      "rest-spread-spacing": [
-        "error",
-        "never"
-      ],
-      "symbol-description": "error",
-      "array-callback-return": "error",
-      "consistent-return": "error",
-      "no-lone-blocks": "error",
-      "linebreak-style": [
-        "warn",
-        "unix"
-      ],
-      "brace-style": [
-        2,
-        "1tbs",
-        {
-          "allowSingleLine": true
-        }
-      ],
-      "quotes": [
-        "warn",
-        "single",
-        {
-          "avoidEscape": true,
-          "allowTemplateLiterals": true
-        }
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "comma-dangle": [
-        "error",
-        {
-          "arrays": "never",
-          "objects": "never",
-          "imports": "never",
-          "exports": "never",
-          "functions": "ignore"
-        }
-      ],
-      "no-trailing-spaces": "error",
-      "spaced-comment": [
-        "warn",
-        "always",
-        {
-          "line": {
-            "markers": [
-              "/",
-              "*"
-            ],
-            "exceptions": [
-              "-",
-              "+",
-              "*",
-              "#"
-            ]
-          },
-          "block": {
-            "markers": [
-              "!"
-            ],
-            "exceptions": [
-              "-",
-              "+",
-              "*",
-              "#"
-            ],
-            "balanced": true
-          }
-        }
-      ],
-      "eol-last": [
-        "error",
-        "never"
-      ]
-    }
-  }
+  "packageManager": "yarn@4.9.1"
 }

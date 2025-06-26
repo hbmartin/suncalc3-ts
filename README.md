@@ -8,18 +8,10 @@ SunCalc
 [![NPM](https://nodei.co/npm/suncalc3.png)](https://nodei.co/npm/suncalc3/)
 
 
-SunCalc is a tiny BSD-licensed JavaScript library for calculating sun position,
-sunlight phases (times for sunrise, sunset, dusk, etc.),
-moon position and lunar phase for the given location and time,
-created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner))
-as a part of the [SunCalc.net project](http://suncalc.net).
-This version is reworked and enhanced by [@hypnos3](https://github.com/hypnos3). The output of the function is changed in the most times to objects with enhanced properies.
+SunCalc is a tiny BSD-licensed JavaScript library for calculating sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time. Originally created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner)) as a part of the [SunCalc.net project](http://suncalc.net). Subsequently reworked and enhanced by [@hypnos3](https://github.com/hypnos3). (The output of the function is changed in the most times to objects with enhanced properies.) Further incorporating TypeScript and other quality improvement work from [@e-adrien](https://github.com/e-adrienhttps://github.com/e-adrien)'s [suncalc-ts](https://github.com/e-adrien/suncalc-ts). Currently maintained by [@hbmartin](https://github.com/hbmartin/) at [suncalc3-ts](https://github.com/hbmartin/suncalc3-ts).
 
-Most calculations are based on the formulas given in the excellent Astronomy Answers articles
-about [position of the sun](http://aa.quae.nl/en/reken/zonpositie.html)
-and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html).
-You can read about different twilight phases calculated by SunCalc
-in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
+Most calculations are based on the formulas given in the excellent Astronomy Answers articles about [position of the sun](http://aa.quae.nl/en/reken/zonpositie.html)
+and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html). You can read about different twilight phases calculated by SunCalc in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 
 ## table of contents
 
@@ -39,24 +31,39 @@ in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 	- [Moon illumination, position and zenith angle](#moon-illumination-position-and-zenith-angle)
 		- [Moon rise and set times](#moon-rise-and-set-times)
 		- [Moon transit](#moon-transit)
-	- [Changelog](#changelog)
-			- [2.0.5 &mdash; April 04, 2022](#205--april-04-2022)
-			- [2.0.4 &mdash; April 04, 2022](#204--april-04-2022)
-			- [2.0.2 &mdash; March 29, 2022](#202--march-29-2022)
-			- [2.0.1 &mdash; March 13, 2022](#201--march-13-2022)
-			- [2.0.0 &mdash; March 13, 2022](#200--march-13-2022)
-			- [1.8.0 &mdash; Dec 22, 2016](#180--dec-22-2016)
-			- [1.7.0 &mdash; Nov 11, 2015](#170--nov-11-2015)
-			- [1.6.0 &mdash; Oct 27, 2014](#160--oct-27-2014)
-			- [1.5.1 &mdash; May 16, 2014](#151--may-16-2014)
-			- [1.4.0 &mdash; Apr 10, 2014](#140--apr-10-2014)
-			- [1.3.0 &mdash; Feb 21, 2014](#130--feb-21-2014)
-			- [1.2.0 &mdash; Mar 07, 2013](#120--mar-07-2013)
-			- [1.1.0 &mdash; Mar 06, 2013](#110--mar-06-2013)
-			- [1.0.0 &mdash; Dec 07, 2011](#100--dec-07-2011)
-			- [0.0.0 &mdash; Aug 25, 2011](#000--aug-25-2011)
 
-## changed in this library
+## Changes from SunCalc3 to SunCalc3-TS
+
+### Modern TypeScript Features:
+
+  - Converted from IIFE to ES modules with proper export statements
+  - Added comprehensive TypeScript interfaces for all data structures
+  - Used proper type annotations throughout
+  - Replaced JSDoc @typedef comments with native TypeScript interfaces
+  - Used modern const/let declarations instead of var
+
+### Code Structure Improvements:
+
+  - Organized code into logical sections (types, constants, utility functions, main functions)
+  - Used arrow functions and modern syntax where appropriate
+  - Improved variable naming and used more descriptive parameter names
+  - Removed unnecessary type casting and @ts-ignore comments
+  - Used template literals and modern conditional operators
+
+### Type Safety:
+
+  - All functions now have proper TypeScript signatures
+  - Interfaces match exactly with the original .d.ts file
+  - Proper union types for parameters that accept multiple types
+  - Optional parameters with default values
+
+### Modularization and Exports:
+
+  - Removed the old IIFE wrapper and global SunCalc object
+  - Each function is now a standalone export
+  - Constants and configuration arrays are properly typed and exported
+
+## Changes from SunCalc to SunCalc3
 
 | function names of original SunCalc  | changes in this library   |
 |-------------------------------------|---------------------------|
@@ -548,74 +555,3 @@ Returns an object with the following properties:
  * @property {Date|NaN} invert - the inverted moon transit date
  */
 ```
-
-## Changelog
-
-#### 2.0.5 &mdash; April 04, 2022
-- function `SunCalc.addTime(...)` removes all items from `SunCalc.timesDeprecated` array where the new rise or set name matches the `alternameName`.
-
-#### 2.0.4 &mdash; April 04, 2022
-- added `SunCalc.addDeprecatedTimeName(...)` function
-- renamed `SunCalc.timesAlternate` array to `SunCalc.timesDeprecated`
-- added validation to function `addTime`
-
-#### 2.0.2 &mdash; March 29, 2022
-- type definitions update
-
-#### 2.0.1 &mdash; March 13, 2022
-
-- added type definitions
-
-#### 2.0.0 &mdash; March 13, 2022
-
-- published as suncalc3 after this library was used by my own with various changes to the original one
-- added getSolarTime and moonTransit
-
-#### 1.8.0 &mdash; Dec 22, 2016
-
-- Improved precision of moonrise/moonset calculations.
-- Added `parallacticAngle` calculation to `getMoonPosition`.
-- Default to today's date in `getMoonIllumination`.
-- Fixed incompatibility when using Browserify/Webpack together with a global AMD loader.
-
-#### 1.7.0 &mdash; Nov 11, 2015
-
-- Added `inUTC` argument to `getMoonTimes`.
-
-#### 1.6.0 &mdash; Oct 27, 2014
-
-- Added `SunCalc.getMoonTimes` for calculating moon rise and set times.
-
-#### 1.5.1 &mdash; May 16, 2014
-
-- Exposed `SunCalc.times` property with defined daylight times.
-- Slightly improved `SunCalc.getTimes` performance.
-
-#### 1.4.0 &mdash; Apr 10, 2014
-
-- Added `phase` to `SunCalc.getMoonIllumination` results (moon phase).
-- Switched from mocha to tape for tests.
-
-#### 1.3.0 &mdash; Feb 21, 2014
-
-- Added `SunCalc.getMoonIllumination` (in place of `getMoonFraction`) that returns an object with `fraction` and `angle`
-(angle of illuminated limb of the moon).
-
-#### 1.2.0 &mdash; Mar 07, 2013
-
-- Added `SunCalc.getMoonFraction` function that returns illuminated fraction of the moon.
-
-#### 1.1.0 &mdash; Mar 06, 2013
-
-- Added `SunCalc.getMoonPosition` function.
-- Added nadir (darkest time of the day, middle of the night).
-- Added tests.
-
-#### 1.0.0 &mdash; Dec 07, 2011
-
-- Published to NPM.
-- Added `SunCalc.addTime` function.
-
-#### 0.0.0 &mdash; Aug 25, 2011
-
-- First commit.
