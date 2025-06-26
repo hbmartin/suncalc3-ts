@@ -13,24 +13,50 @@ SunCalc is a tiny BSD-licensed JavaScript library for calculating sun position, 
 Most calculations are based on the formulas given in the excellent Astronomy Answers articles about [position of the sun](http://aa.quae.nl/en/reken/zonpositie.html)
 and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html). You can read about different twilight phases calculated by SunCalc in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 
-## table of contents
+## Usage example
 
-- [SunCalc](#suncalc)
-	- [table of contents](#table-of-contents)
-	- [changed in this library](#changed-in-this-library)
-	- [Usage example](#usage-example)
-	- [Reference](#reference)
-		- [Sunlight times](#sunlight-times)
-			- [adding / getting own Sunlight times](#adding--getting-own-sunlight-times)
-			- [get specific Sunlight time](#get-specific-sunlight-time)
-			- [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
-			- [getting solar time](#getting-solar-time)
-		- [Sun position](#sun-position)
-		- [Moon position](#moon-position)
-		- [Moon illumination](#moon-illumination)
-	- [Moon illumination, position and zenith angle](#moon-illumination-position-and-zenith-angle)
-		- [Moon rise and set times](#moon-rise-and-set-times)
-		- [Moon transit](#moon-transit)
+```javascript
+// get today's sunlight times for London
+let times = SunCalc.getSunTimes(new Date(), 51.5, -0.1);
+
+// format sunrise time from the Date object
+let sunriseStr = times.sunriseStart.getHours() + ':' + times.sunrise.getMinutes();
+
+// get position of the sun (azimuth and altitude) at today's sunrise
+let sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
+
+// get sunrise azimuth in degrees
+let sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
+```
+
+SunCalc is also available as an NPM package:
+
+```bash
+$ npm install suncalc3
+```
+
+```js
+let SunCalc = require('suncalc3');
+```
+
+- [Changes from SunCalc3 to SunCalc3-TS](#changes-from-suncalc3-to-suncalc3-ts)
+   * [Modern TypeScript Features](#modern-typescript-features)
+   * [Code Structure Improvements](#code-structure-improvements)
+   * [Type Safety](#type-safety)
+   * [Modularization and Exports](#modularization-and-exports)
+- [Changes from SunCalc to SunCalc3](#changes-from-suncalc-to-suncalc3)
+- [Reference](#reference)
+   * [Sunlight times](#sunlight-times)
+      + [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
+      + [get specific Sunlight time](#get-specific-sunlight-time)
+      + [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
+      + [getting solar time](#getting-solar-time)
+   * [Sun position](#sun-position)
+   * [Moon position](#moon-position)
+   * [Moon illumination](#moon-illumination)
+- [Moon illumination, position and zenith angle](#moon-illumination-position-and-zenith-angle)
+   * [Moon rise and set times](#moon-rise-and-set-times)
+   * [Moon transit](#moon-transit)
 
 ## Changes from SunCalc3 to SunCalc3-TS
 
@@ -81,32 +107,6 @@ and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html). You can read ab
 | goldenHourEnd                          | goldenHourDawnEnd         |
 
 Additional are the output of the function is changed in the most times to objects with more properies. Also JSDOC is added ans type script definitions.
-
-## Usage example
-
-```javascript
-// get today's sunlight times for London
-let times = SunCalc.getSunTimes(new Date(), 51.5, -0.1);
-
-// format sunrise time from the Date object
-let sunriseStr = times.sunriseStart.getHours() + ':' + times.sunrise.getMinutes();
-
-// get position of the sun (azimuth and altitude) at today's sunrise
-let sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
-
-// get sunrise azimuth in degrees
-let sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
-```
-
-SunCalc is also available as an NPM package:
-
-```bash
-$ npm install suncalc3
-```
-
-```js
-let SunCalc = require('suncalc3');
-```
 
 ## Reference
 
