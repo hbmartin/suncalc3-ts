@@ -1,112 +1,144 @@
-
 SunCalc
 =======
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/hypnos3/suncalc3/graphs/commit-activity)
-[![npm version](https://badge.fury.io/js/suncalc3.svg)](https://badge.fury.io/js/suncalc3)
-[![Issues](https://img.shields.io/github/issues/hypnos3/suncalc3.svg?style=flat-square)](https://github.com/hypnos3/suncalc3/issues)
+
+[![QC Checks](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml/badge.svg)](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml)
+[![npm version](https://img.shields.io/npm/v/suncalc3-ts.svg)](https://www.npmjs.com/package/suncalc3-ts)
+[![Issues](https://img.shields.io/github/issues/hbmartin/suncalc3-ts.svg?style=flat-square)](https://github.com/hbmartin/suncalc3-ts/issues)
 [![code style](https://img.shields.io/badge/Code%20Style-eslint-green.svg)](https://eslint.org/)
-[![NPM](https://nodei.co/npm/suncalc3.png)](https://nodei.co/npm/suncalc3/)
+[![License](https://img.shields.io/badge/License-BSD--2--Clause-blue.svg)](./LICENSE)
 
-
-SunCalc is a tiny BSD-licensed JavaScript library for calculating sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time. Originally created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner)) as a part of the [SunCalc.net project](http://suncalc.net). Subsequently reworked and enhanced by [@hypnos3](https://github.com/hypnos3). (The output of the function is changed in the most times to objects with enhanced properies.) Further incorporating TypeScript and other quality improvement work from [@e-adrien](https://github.com/e-adrienhttps://github.com/e-adrien)'s [suncalc-ts](https://github.com/e-adrien/suncalc-ts). Currently maintained by [@hbmartin](https://github.com/hbmartin/) at [suncalc3-ts](https://github.com/hbmartin/suncalc3-ts).
+SunCalc is a tiny BSD-licensed TypeScript library for calculating sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time. Originally created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner)) as a part of the [SunCalc.net project](http://suncalc.net). Subsequently reworked and enhanced by [@hypnos3](https://github.com/hypnos3). (The output of the function is changed in the most times to objects with enhanced properies.) Further incorporating TypeScript and other quality improvement work from [@e-adrien](https://github.com/e-adrien)'s [suncalc-ts](https://github.com/e-adrien/suncalc-ts). Currently maintained by [@hbmartin](https://github.com/hbmartin/) at [suncalc3-ts](https://github.com/hbmartin/suncalc3-ts).
 
 Most calculations are based on the formulas given in the excellent Astronomy Answers articles about [position of the sun](http://aa.quae.nl/en/reken/zonpositie.html)
 and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html). You can read about different twilight phases calculated by SunCalc in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
 
-## Usage example
-
-```javascript
-// get today's sunlight times for London
-let times = SunCalc.getSunTimes(new Date(), 51.5, -0.1);
-
-// format sunrise time from the Date object
-let sunriseStr = times.sunriseStart.getHours() + ':' + times.sunrise.getMinutes();
-
-// get position of the sun (azimuth and altitude) at today's sunrise
-let sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
-
-// get sunrise azimuth in degrees
-let sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
-```
-
-SunCalc is also available as an NPM package:
+## Installation
 
 ```bash
-$ npm install suncalc3
+npm install suncalc3-ts
 ```
 
-```js
-let SunCalc = require('suncalc3');
+The package is published as an ES module with full TypeScript type definitions and requires Node.js 20 or newer (or any modern bundler/browser toolchain).
+
+## Usage example
+
+```typescript
+import * as SunCalc from "suncalc3-ts";
+
+// get today's sunlight times for London
+const times = SunCalc.getSunTimes(new Date(), 51.5, -0.1);
+
+// each entry is an ISunTimeDef object whose `value` holds the Date
+const sunriseStr = `${times.sunriseStart.value.getHours()}:${times.sunriseStart.value.getMinutes()}`;
+
+// get position of the sun (azimuth and altitude) at today's sunrise
+const sunrisePos = SunCalc.getPosition(times.sunriseStart.value, 51.5, -0.1);
+
+// get sunrise azimuth in degrees
+const sunriseAzimuth = sunrisePos.azimuthDegrees;
 ```
+
+Every function is also available as a named import:
+
+```typescript
+import { getSunTimes, getMoonIllumination } from "suncalc3-ts";
+```
+
+### Exported functions at a glance
+
+| Function                                                    | Returns                                                       |
+| ----------------------------------------------------------- | ------------------------------------------------------------- |
+| `getSunTimes(date, lat, lng, ...)`                          | All sun times of the day (`ISunTimeList`)                     |
+| `getSunTime(date, lat, lng, elevationAngle, ...)`           | Rise/set time for a custom sun elevation (`ISunTimeSingle`)   |
+| `getSunTimeByAzimuth(date, lat, lng, azimuth, ...)`         | Time at which the sun reaches an azimuth (`Date`)             |
+| `getSolarTime(date, lng, utcOffset)`                        | Local solar time (`Date`)                                     |
+| `getPosition(date, lat, lng)`                               | Sun azimuth/altitude (`ISunPosition`)                         |
+| `getMoonPosition(date, lat, lng)`                           | Moon azimuth/altitude/distance (`IMoonPosition`)              |
+| `getMoonIllumination(date)`                                 | Moon phase and illumination (`IMoonIllumination`)             |
+| `getMoonData(date, lat, lng)`                               | Combined moon position + illumination (`IMoonData`)           |
+| `getMoonTimes(date, lat, lng, inUTC)`                       | Moon rise/set times (`IMoonTimes`)                            |
+| `moonTransit(rise, set, lat, lng)`                          | Moon transit time                                             |
+| `getTimes(date, lat, lng, ...)` _(deprecated)_              | Classic SunCalc-style map of plain `Date`s, to ease migration |
+| `addTime(...)`, `addDeprecatedTimeName(...)` _(deprecated)_ | Register process-global custom times — prefer `customTimes`   |
 
 - [Changes from SunCalc3 to SunCalc3-TS](#changes-from-suncalc3-to-suncalc3-ts)
-   * [Modern TypeScript Features](#modern-typescript-features)
-   * [Code Structure Improvements](#code-structure-improvements)
-   * [Type Safety](#type-safety)
-   * [Modularization and Exports](#modularization-and-exports)
+    - [Modern TypeScript Features](#modern-typescript-features)
+    - [Code Structure Improvements](#code-structure-improvements)
+    - [Type Safety](#type-safety)
+    - [Modularization and Exports](#modularization-and-exports)
 - [Changes from SunCalc to SunCalc3](#changes-from-suncalc-to-suncalc3)
 - [Reference](#reference)
-   * [Sunlight times](#sunlight-times)
-      + [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
-      + [get specific Sunlight time](#get-specific-sunlight-time)
-      + [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
-      + [getting solar time](#getting-solar-time)
-   * [Sun position](#sun-position)
-   * [Moon position](#moon-position)
-   * [Moon illumination](#moon-illumination)
+    - [Sunlight times](#sunlight-times)
+        - [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
+        - [get specific Sunlight time](#get-specific-sunlight-time)
+        - [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
+        - [getting solar time](#getting-solar-time)
+    - [Sun position](#sun-position)
+    - [Moon position](#moon-position)
+    - [Moon illumination](#moon-illumination)
 - [Moon illumination, position and zenith angle](#moon-illumination-position-and-zenith-angle)
-   * [Moon rise and set times](#moon-rise-and-set-times)
-   * [Moon transit](#moon-transit)
+    - [Moon rise and set times](#moon-rise-and-set-times)
+    - [Moon transit](#moon-transit)
 
 ## Changes from SunCalc3 to SunCalc3-TS
 
 ### Modern TypeScript Features:
 
-  - Converted from IIFE to ES modules with proper export statements
-  - Added comprehensive TypeScript interfaces for all data structures
-  - Used proper type annotations throughout
-  - Replaced JSDoc @typedef comments with native TypeScript interfaces
-  - Used modern const/let declarations instead of var
+- Converted from IIFE to ES modules with proper export statements
+- Added comprehensive TypeScript interfaces for all data structures
+- Used proper type annotations throughout
+- Replaced JSDoc @typedef comments with native TypeScript interfaces
+- Used modern const/let declarations instead of var
 
 ### Code Structure Improvements:
 
-  - Organized code into logical sections (types, constants, utility functions, main functions)
-  - Used arrow functions and modern syntax where appropriate
-  - Improved variable naming and used more descriptive parameter names
-  - Removed unnecessary type casting and @ts-ignore comments
-  - Used template literals and modern conditional operators
+- Organized code into logical sections (types, constants, utility functions, main functions)
+- Used arrow functions and modern syntax where appropriate
+- Improved variable naming and used more descriptive parameter names
+- Removed unnecessary type casting and @ts-ignore comments
+- Used template literals and modern conditional operators
 
 ### Type Safety:
 
-  - All functions now have proper TypeScript signatures
-  - Interfaces match exactly with the original .d.ts file
-  - Proper union types for parameters that accept multiple types
-  - Optional parameters with default values
+- All functions now have proper TypeScript signatures
+- Interfaces match exactly with the original .d.ts file
+- Proper union types for parameters that accept multiple types
+- Optional parameters with default values
 
 ### Modularization and Exports:
 
-  - Removed the old IIFE wrapper and global SunCalc object
-  - Each function is now a standalone export
-  - Constants and configuration arrays are properly typed and exported
+- Removed the old IIFE wrapper and global SunCalc object
+- Each function is now a standalone export
+- Constants and configuration arrays are properly typed and exported
+- Source is split into focused modules (`types`, `constants`, `sun`, `moon`) re-exported from a single entry point
+
+### Additional improvements in this fork:
+
+- Input validation: all functions throw on invalid dates and out-of-range latitude/longitude
+- `getSunTimes` accepts a per-call `customTimes` parameter, replacing the process-global `addTime` (which is still available but deprecated)
+- A deprecated `getTimes` compatibility wrapper eases migration from the original SunCalc
+- Published with an `exports` map, source maps, and declaration maps
 
 ## Changes from SunCalc to SunCalc3
 
-| function names of original SunCalc  | changes in this library   |
-|-------------------------------------|---------------------------|
-| SunCalc.getTimes                    | SunCalc.getSunTimes       |
+| function names of original SunCalc | changes in this library |
+| ---------------------------------- | ----------------------- |
+| SunCalc.getTimes                   | SunCalc.getSunTimes     |
 
-| name of the manes of original SunCalc  | changes in this library   |
-|----------------------------------------|---------------------------|
-| sunrise                                | sunriseEnd                |
-| sunset                                 | sunsetStart               |
-| dawn                                   | civilDawn                 |
-| dusk                                   | civilDusk                 |
-| night                                  | astronomicalDusk          |
-| nightEnd                               | astronomicalDawn          |
-| goldenHour                             | goldenHourDuskStart       |
-| goldenHourEnd                          | goldenHourDawnEnd         |
+| names of the times of original SunCalc | changes in this library |
+| -------------------------------------- | ----------------------- |
+| sunrise                                | sunriseStart            |
+| sunset                                 | sunsetEnd               |
+| dawn                                   | civilDawn               |
+| dusk                                   | civilDusk               |
+| night                                  | astronomicalDusk        |
+| nightEnd                               | astronomicalDawn        |
+| goldenHour                             | goldenHourDuskStart     |
+| goldenHourEnd                          | goldenHourDawnEnd       |
 
-Additional are the output of the function is changed in the most times to objects with more properies. Also JSDOC is added ans type script definitions.
+Additionally, the output of most functions is changed to objects with more properties, and JSDoc plus TypeScript definitions are provided.
+
+If you are migrating from the original SunCalc, the deprecated `getTimes(date, lat, lng, height?, inUTC?)` wrapper returns a plain map of `Date`s keyed by both the current and the original SunCalc names.
 
 ## Reference
 
@@ -121,115 +153,133 @@ Additional are the output of the function is changed in the most times to object
  * @param {number} [height=0]  the observer height (in meters) relative to the horizon
  * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
  * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
+ * @param {ISunTimeNames[]} [customTimes] additional sun time definitions to calculate, applied for this call only
  * @return {ISunTimeList} result object of sunTime
  */
-SunCalc.getSunTimes(dateValue, lat, lng, height, addDeprecated, inUTC)
+SunCalc.getSunTimes(
+	dateValue,
+	lat,
+	lng,
+	height,
+	addDeprecated,
+	inUTC,
+	customTimes
+);
 ```
 
 Returns an object with the following properties:
 
 ```javascript
 /**
-* @typedef {Object} ISunTimeList
-* @property {ISunTimeDef} solarNoon - The sun-time for the solar noon (sun is in the highest position)
-* @property {ISunTimeDef} nadir - The sun-time for nadir (darkest moment of the night, sun is in the lowest position)
-* @property {ISunTimeDef} goldenHourDawnStart - The sun-time for morning golden hour (soft light, best time for photography)
-* @property {ISunTimeDef} goldenHourDawnEnd - The sun-time for morning golden hour (soft light, best time for photography)
-* @property {ISunTimeDef} goldenHourDuskStart - The sun-time for evening golden hour starts
-* @property {ISunTimeDef} goldenHourDuskEnd - The sun-time for evening golden hour starts
-* @property {ISunTimeDef} sunriseStart - The sun-time for sunrise starts (top edge of the sun appears on the horizon)
-* @property {ISunTimeDef} sunriseEnd - The sun-time for sunrise ends (bottom edge of the sun touches the horizon)
-* @property {ISunTimeDef} sunsetStart - The sun-time for sunset starts (bottom edge of the sun touches the horizon)
-* @property {ISunTimeDef} sunsetEnd - The sun-time for sunset ends (sun disappears below the horizon, evening civil twilight starts)
-* @property {ISunTimeDef} blueHourDawnStart - The sun-time for blue Hour start (time for special photography photos starts)
-* @property {ISunTimeDef} blueHourDawnEnd - The sun-time for blue Hour end (time for special photography photos end)
-* @property {ISunTimeDef} blueHourDuskStart - The sun-time for blue Hour start (time for special photography photos starts)
-* @property {ISunTimeDef} blueHourDuskEnd - The sun-time for blue Hour end (time for special photography photos end)
-* @property {ISunTimeDef} civilDawn - The sun-time for dawn (morning nautical twilight ends, morning civil twilight starts)
-* @property {ISunTimeDef} civilDusk - The sun-time for dusk (evening nautical twilight starts)
-* @property {ISunTimeDef} nauticalDawn - The sun-time for nautical dawn (morning nautical twilight starts)
-* @property {ISunTimeDef} nauticalDusk - The sun-time for nautical dusk end (evening astronomical twilight starts)
-* @property {ISunTimeDef} amateurDawn - The sun-time for amateur astronomical dawn (sun at 12° before sunrise)
-* @property {ISunTimeDef} amateurDusk - The sun-time for amateur astronomical dusk (sun at 12° after sunrise)
-* @property {ISunTimeDef} astronomicalDawn - The sun-time for night ends (morning astronomical twilight starts)
-* @property {ISunTimeDef} astronomicalDusk - The sun-time for night starts (dark enough for astronomical observations)
-* @property {ISunTimeDef} [dawn] - Deprecated: alternate for civilDawn
-* @property {ISunTimeDef} [dusk] - Deprecated: alternate for civilDusk
-* @property {ISunTimeDef} [nightEnd] - Deprecated: alternate for astronomicalDawn
-* @property {ISunTimeDef} [night] - Deprecated: alternate for astronomicalDusk
-* @property {ISunTimeDef} [nightStart] - Deprecated: alternate for astronomicalDusk
-* @property {ISunTimeDef} [goldenHour] - Deprecated: alternate for goldenHourDuskStart
-* @property {ISunTimeDef} [sunset] - Deprecated: alternate for sunsetEnd
-* @property {ISunTimeDef} [sunrise] - Deprecated: alternate for sunriseStart
-* @property {ISunTimeDef} [goldenHourEnd] - Deprecated: alternate for goldenHourDawnEnd
-* @property {ISunTimeDef} [goldenHourStart] - Deprecated: alternate for goldenHourDuskStart
-*/
+ * @typedef {Object} ISunTimeList
+ * @property {ISunTimeDef} solarNoon - The sun-time for the solar noon (sun is in the highest position)
+ * @property {ISunTimeDef} nadir - The sun-time for nadir (darkest moment of the night, sun is in the lowest position)
+ * @property {ISunTimeDef} goldenHourDawnStart - The sun-time for morning golden hour (soft light, best time for photography)
+ * @property {ISunTimeDef} goldenHourDawnEnd - The sun-time for morning golden hour (soft light, best time for photography)
+ * @property {ISunTimeDef} goldenHourDuskStart - The sun-time for evening golden hour starts
+ * @property {ISunTimeDef} goldenHourDuskEnd - The sun-time for evening golden hour starts
+ * @property {ISunTimeDef} sunriseStart - The sun-time for sunrise starts (top edge of the sun appears on the horizon)
+ * @property {ISunTimeDef} sunriseEnd - The sun-time for sunrise ends (bottom edge of the sun touches the horizon)
+ * @property {ISunTimeDef} sunsetStart - The sun-time for sunset starts (bottom edge of the sun touches the horizon)
+ * @property {ISunTimeDef} sunsetEnd - The sun-time for sunset ends (sun disappears below the horizon, evening civil twilight starts)
+ * @property {ISunTimeDef} blueHourDawnStart - The sun-time for blue Hour start (time for special photography photos starts)
+ * @property {ISunTimeDef} blueHourDawnEnd - The sun-time for blue Hour end (time for special photography photos end)
+ * @property {ISunTimeDef} blueHourDuskStart - The sun-time for blue Hour start (time for special photography photos starts)
+ * @property {ISunTimeDef} blueHourDuskEnd - The sun-time for blue Hour end (time for special photography photos end)
+ * @property {ISunTimeDef} civilDawn - The sun-time for dawn (morning nautical twilight ends, morning civil twilight starts)
+ * @property {ISunTimeDef} civilDusk - The sun-time for dusk (evening nautical twilight starts)
+ * @property {ISunTimeDef} nauticalDawn - The sun-time for nautical dawn (morning nautical twilight starts)
+ * @property {ISunTimeDef} nauticalDusk - The sun-time for nautical dusk end (evening astronomical twilight starts)
+ * @property {ISunTimeDef} amateurDawn - The sun-time for amateur astronomical dawn (sun at 15° below the horizon)
+ * @property {ISunTimeDef} amateurDusk - The sun-time for amateur astronomical dusk (sun at 15° below the horizon)
+ * @property {ISunTimeDef} astronomicalDawn - The sun-time for night ends (morning astronomical twilight starts)
+ * @property {ISunTimeDef} astronomicalDusk - The sun-time for night starts (dark enough for astronomical observations)
+ * @property {ISunTimeDef} [dawn] - Deprecated: alternate for civilDawn
+ * @property {ISunTimeDef} [dusk] - Deprecated: alternate for civilDusk
+ * @property {ISunTimeDef} [nightEnd] - Deprecated: alternate for astronomicalDawn
+ * @property {ISunTimeDef} [night] - Deprecated: alternate for astronomicalDusk
+ * @property {ISunTimeDef} [nightStart] - Deprecated: alternate for astronomicalDusk
+ * @property {ISunTimeDef} [goldenHour] - Deprecated: alternate for goldenHourDuskStart
+ * @property {ISunTimeDef} [sunset] - Deprecated: alternate for sunsetEnd
+ * @property {ISunTimeDef} [sunrise] - Deprecated: alternate for sunriseStart
+ * @property {ISunTimeDef} [goldenHourEnd] - Deprecated: alternate for goldenHourDawnEnd
+ * @property {ISunTimeDef} [goldenHourStart] - Deprecated: alternate for goldenHourDuskStart
+ */
 ```
 
 These properties contains the sun times for these given times:
 
-| Property            | Description                                                              | SunBH |
-| ------------------- | ------------------------------------------------------------------------ | ----- |
-| `astronomicalDawn`  | night ends (morning astronomical twilight starts)                        | 18    |
-| `amateurDawn`       | amateur astronomical dawn (sun at 12° before sunrise)                    | 15    |
-| `nauticalDawn`      | nautical dawn (morning nautical twilight starts)                         | 12    |
-| `blueHourDawnStart` | blue Hour start (time for special photography photos starts)             | 8     |
-| `civilDawn`         | dawn (morning nautical twilight ends, morning civil twilight starts)     | 6     |
-| `blueHourDawnEnd`   | blue Hour end (time for special photography photos end)                  | 4     |
-| `goldenHourDawnStart` | morning golden hour (soft light, best time for photography) starts     | -1    |
-| `sunriseStart`      | sunrise (top edge of the sun appears on the horizon)                     | 0.833 |
-| `sunriseEnd`        | sunrise ends (bottom edge of the sun touches the horizon)                | 0.3   |
-| `goldenHourDawnEnd`   | morning golden hour (soft light, best time for photography) ends       | -6    |
-| `solarNoon`         | solar noon (sun is in the highest position)                              |       |
-| `goldenHourDuskStart` | evening golden hour (soft light, best time for photography) starts     | -6    |
-| `sunsetStart`       | sunset starts (bottom edge of the sun touches the horizon)               | 0.3   |
-| `sunsetEnd`         | sunset (sun disappears below the horizon, evening civil twilight starts) | 0.833 |
-| `goldenHourDuskEnd` | evening golden hour (soft light, best time for photography) ends         | 1     |
-| `blueHourDuskStart` | blue Hour start (time for special photography photos starts)             | 4     |
-| `civilDusk`         | dusk (evening nautical twilight starts)                                  | 6     |
-| `blueHourDuskEnd`   | blue Hour end (time for special photography photos end)                  | 8     |
-| `nauticalDusk`      | nautical dusk end (evening astronomical twilight starts)                 | 12    |
-| `amateurDusk`       | amateur astronomical dusk (sun at 12° after sunrise)                     | 15    |
-| `astronomicalDusk`  | night starts (dark enough for astronomical observations)                 | 18    |
-| `nadir`             | nadir (darkest moment of the night, sun is in the lowest position)       |       |
+| Property              | Description                                                              | SunBH |
+| --------------------- | ------------------------------------------------------------------------ | ----- |
+| `astronomicalDawn`    | night ends (morning astronomical twilight starts)                        | 18    |
+| `amateurDawn`         | amateur astronomical dawn (sun at 15° below the horizon)                 | 15    |
+| `nauticalDawn`        | nautical dawn (morning nautical twilight starts)                         | 12    |
+| `blueHourDawnStart`   | blue Hour start (time for special photography photos starts)             | 8     |
+| `civilDawn`           | dawn (morning nautical twilight ends, morning civil twilight starts)     | 6     |
+| `blueHourDawnEnd`     | blue Hour end (time for special photography photos end)                  | 4     |
+| `goldenHourDawnStart` | morning golden hour (soft light, best time for photography) starts       | -1    |
+| `sunriseStart`        | sunrise (top edge of the sun appears on the horizon)                     | 0.833 |
+| `sunriseEnd`          | sunrise ends (bottom edge of the sun touches the horizon)                | 0.3   |
+| `goldenHourDawnEnd`   | morning golden hour (soft light, best time for photography) ends         | -6    |
+| `solarNoon`           | solar noon (sun is in the highest position)                              |       |
+| `goldenHourDuskStart` | evening golden hour (soft light, best time for photography) starts       | -6    |
+| `sunsetStart`         | sunset starts (bottom edge of the sun touches the horizon)               | 0.3   |
+| `sunsetEnd`           | sunset (sun disappears below the horizon, evening civil twilight starts) | 0.833 |
+| `goldenHourDuskEnd`   | evening golden hour (soft light, best time for photography) ends         | 1     |
+| `blueHourDuskStart`   | blue Hour start (time for special photography photos starts)             | 4     |
+| `civilDusk`           | dusk (evening nautical twilight starts)                                  | 6     |
+| `blueHourDuskEnd`     | blue Hour end (time for special photography photos end)                  | 8     |
+| `nauticalDusk`        | nautical dusk end (evening astronomical twilight starts)                 | 12    |
+| `amateurDusk`         | amateur astronomical dusk (sun at 15° below the horizon)                 | 15    |
+| `astronomicalDusk`    | night starts (dark enough for astronomical observations)                 | 18    |
+| `nadir`               | nadir (darkest moment of the night, sun is in the lowest position)       |       |
 
 SunBH is the angle of the sun below the horizon
 
 If `addDeprecated` is `true`, the object will have additional objects, with the same properties as other properties. This is to have backwards compatibility to original suncalc library.
 
-| Property            | will equal to                                                            |
-| ------------------- | ------------------------------------------------------------------------ |
-| `dawn`              | `civilDawn` |
-| `dusk`              | `civilDusk` |
-| `nightEnd`          | `astronomicalDawn` |
-| `night`             | `astronomicalDusk` |
-| `nightStart`        | `astronomicalDusk` |
-| `sunrise`           | `sunriseStart` |
-| `sunset`            | `sunsetEnd` |
-| `goldenHour`        | `goldenHourDuskStart` |
-| `goldenHourEnd`     | `goldenHourDawnEnd` |
-| `goldenHourStart`   | `goldenHourDuskStart` |
-
+| Property          | will equal to         |
+| ----------------- | --------------------- |
+| `dawn`            | `civilDawn`           |
+| `dusk`            | `civilDusk`           |
+| `nightEnd`        | `astronomicalDawn`    |
+| `night`           | `astronomicalDusk`    |
+| `nightStart`      | `astronomicalDusk`    |
+| `sunrise`         | `sunriseStart`        |
+| `sunset`          | `sunsetEnd`           |
+| `goldenHour`      | `goldenHourDuskStart` |
+| `goldenHourEnd`   | `goldenHourDawnEnd`   |
+| `goldenHourStart` | `goldenHourDuskStart` |
 
 Each of the properties will be an object with the following properties:
 
 ```javascript
 /**
-* @typedef {Object} ISunTimeDef
-* @property {string} name - The Name of the time
-* @property {Date} value - Date object with the calculated sun-time
-* @property {number} ts - The time as Unix timestamp
-* @property {number} pos - The position of the sun on the time
-* @property {number} [elevation] - Angle of the sun on the time (except for solarNoon / nadir)
-* @property {number} julian - The time as Julian calendar
-* @property {boolean} valid - indicates if the time is valid or not
-* @property {boolean} [deprecated] - indicates if the time is a deprecated time name
-* @property {string} [nameOrg] - if it is a deprecated name, the original property name
-* @property {number} [posOrg] - if it is a deprecated name, the original position
-*/
+ * @typedef {Object} ISunTimeDef
+ * @property {string} name - The Name of the time
+ * @property {Date} value - Date object with the calculated sun-time
+ * @property {number} ts - The time as Unix timestamp
+ * @property {number} pos - The position of the sun on the time
+ * @property {number} [elevation] - Angle of the sun on the time (except for solarNoon / nadir)
+ * @property {number} julian - The time as Julian calendar
+ * @property {boolean} valid - indicates if the time is valid or not
+ * @property {boolean} [deprecated] - indicates if the time is a deprecated time name
+ * @property {string} [nameOrg] - if it is a deprecated name, the original property name
+ * @property {number} [posOrg] - if it is a deprecated name, the original position
+ */
 ```
 
 #### adding / getting own Sunlight times
+
+The preferred way to calculate custom sun times is the `customTimes` parameter of `getSunTimes`, which applies only to that call and does not affect other consumers of the library:
+
+```typescript
+const times = SunCalc.getSunTimes(new Date(), 51.5, -0.1, 0, false, false, [
+	{ angle: -10, riseName: "customDawn", setName: "customDusk" },
+]);
+```
+
+Alternatively, `addTime` registers a custom time process-globally. It is **deprecated** because the registration is shared by every consumer of the library in the same process:
 
 ```javascript
 /** adds a custom time to the times config
@@ -241,16 +291,16 @@ Each of the properties will be an object with the following properties:
  * @param {boolean} [degree=true] defines if the elevationAngle is in degree not in radians
  * @return {Boolean} true if new time could be added, false if not (parameter missing; riseName or setName already existing)
  */
-SunCalc.addTime(angleInDegrees, riseName, setName, risePos, setPos)
+SunCalc.addTime(angleInDegrees, riseName, setName, risePos, setPos);
 ```
 
 Adds a custom time when the sun reaches the given angle to results returned by `SunCalc.getSunTimes`.
 
 - the function tests for validity of the given parameters
-  - `riseName` and `setName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
-  - `angleInDegrees` must be a number
-  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
-  - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
+    - `riseName` and `setName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+    - `angleInDegrees` must be a number
+    - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+    - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
 
 Additional this function removes all items from `SunCalc.timesDeprecated` array where the `riseName` or `setName` matches the `alternameName` to prevent errors.
 
@@ -275,15 +325,15 @@ Additional this function removes all items from `SunCalc.timesDeprecated` array 
  * @param {string} originalName     - original time name from SunCalc.times array
  * @return {Boolean} true if could be added, false if not (parameter missing; originalName does not exists; alternameName already existis)
  */
-SunCalc.addDeprecatedTimeName(alternameName, originalName)
+SunCalc.addDeprecatedTimeName(alternameName, originalName);
 ```
 
 Add a deprecated name
 
 - the function tests for validity of the given parameters
-  - `alternameName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
-  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
-  - `alternameName` must not correspond to a `riseName` or `setName` in the array `SunCalc.times`
+    - `alternameName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+    - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+    - `alternameName` must not correspond to a `riseName` or `setName` in the array `SunCalc.times`
 
 `SunCalc.timesDeprecated` property contains all deprecated time names as an `Array.<[string, string]>` - `Array.<deprecatedname, originalName>`.
 
@@ -302,18 +352,18 @@ Add a deprecated name
  * @param {boolean} [inUTC] defines if the calculation should be in utc or local time (default is local)
  * @return {ISunTimeSingle} result object of single sunTime
  */
-SunCalc.getSunTime(dateValue, lat, lng, elevationAngle, height, degree, inUTC)
+SunCalc.getSunTime(dateValue, lat, lng, elevationAngle, height, degree, inUTC);
 ```
 
 Returns an object with the following properties:
 
 ```javascript
 /**
-* @typedef {Object} ISunTimeSingle
-* @property {ISunTimeDef} rise - sun-time for sun rise
-* @property {ISunTimeDef} set - sun-time for sun set
-* @property {string} [error] - string of an error message if an error occurs
-*/
+ * @typedef {Object} ISunTimeSingle
+ * @property {ISunTimeDef} rise - sun-time for sun rise
+ * @property {ISunTimeDef} set - sun-time for sun set
+ * @property {string} [error] - string of an error message if an error occurs
+ */
 ```
 
 `rise` and `set` will be an object equal to the times objects given by `SunCalc.getSunTimes`.
@@ -323,30 +373,29 @@ Returns an object with the following properties:
 ```javascript
 /**
  * calculates time for a given azimuth angle for a given date and latitude/longitude
- * @param {Date} date start date for calculating sun-position
- * @param {number} nazimuth azimuth for calculating sun-position
+ * @param {number|Date} dateValue start date for calculating sun-position
  * @param {number} lat latitude for calculating sun-position
  * @param {number} lng longitude for calculating sun-position
+ * @param {number} azimuth azimuth for calculating sun-position
  * @param {boolean} [degree] true if the angle is in degree and not in rad
  * @return {Date} result time of sun-position
-*/
-SunCalc.getSunTimeByAzimuth(date, lat, lng, nazimuth,  degree)
+ */
+SunCalc.getSunTimeByAzimuth(dateValue, lat, lng, azimuth, degree);
 ```
 
 Returns an Date object
 
 #### getting solar time
 
-
 ```javascript
 /**
- * Calculaes the solar time of the given date in the given latitude and UTC offset.
+ * Calculates the solar time of the given date at the given longitude and UTC offset.
  * @param {number|Date} dateValue Date object or timestamp for calculating solar time
- * @param {number} utcOffset
- * @param {number} lng
- * @returns Returns the solar time of the given date in the given latitude and UTC offset.
+ * @param {number} lng longitude for calculating solar time
+ * @param {number} utcOffset UTC offset of the observer in hours
+ * @returns Returns the solar time of the given date at the given longitude and UTC offset.
  */
-SunCalc.getSolarTime(dateValue, utcOffset, lng)
+SunCalc.getSolarTime(dateValue, lng, utcOffset);
 ```
 
 Returns an Date object
@@ -360,8 +409,8 @@ Returns an Date object
  * @param {number} lat latitude for calculating sun-position
  * @param {number} lng longitude for calculating sun-position
  * @return {ISunPosition} result object of sun-position
-*/
-SunCalc.getPosition(dateValue, lat, lng)
+ */
+SunCalc.getPosition(dateValue, lat, lng);
 ```
 
 Returns an object with the following properties:
@@ -379,11 +428,10 @@ Returns an object with the following properties:
  */
 ```
 
- * `altitude`: sun altitude above the horizon in radians,
- e.g. `0` at the horizon and `PI/2` at the zenith (straight over your head)
- * `azimuth`: sun azimuth in radians (direction along the horizon, measured from south to west),
- e.g. `0` is south and `Math.PI * 3/4` is northwest
-
+- `altitude`: sun altitude above the horizon in radians,
+  e.g. `0` at the horizon and `PI/2` at the zenith (straight over your head)
+- `azimuth`: sun azimuth in radians (direction along the horizon, measured from south to west),
+  e.g. `0` is south and `Math.PI * 3/4` is northwest
 
 ### Moon position
 
@@ -395,7 +443,7 @@ Returns an object with the following properties:
  * @param {number} lng longitude for calculating moon-position
  * @return {IMoonPosition} result object of moon-position
  */
-SunCalc.getMoonPosition(dateValue, lat, lng)
+SunCalc.getMoonPosition(dateValue, lat, lng);
 ```
 
 Returns an object with the following properties:
@@ -423,7 +471,7 @@ Returns an object with the following properties:
  * @param {number|Date} dateValue Date object or timestamp for calculating moon-illumination
  * @return {IMoonIllumination} result object of moon-illumination
  */
-SunCalc.getMoonIllumination(dateValue)
+SunCalc.getMoonIllumination(dateValue);
 ```
 
 Returns an object with the following properties:
@@ -465,13 +513,12 @@ Returns an object with the following properties:
  */
 ```
 
-
 Moon phase value should be interpreted like this:
 
 By subtracting the `parallacticAngle` from the `angle` one can get the zenith angle of the moons bright limb (anticlockwise).
 The zenith angle can be used do draw the moon shape from the observers perspective (e.g. moon lying on its back). The `SunCalc.getMoonData` function will return the zenith angle.
 
-`SunCalc.moonCycles` contains an array with objects  of type `IPhaseObj` for every phase.
+`SunCalc.moonCycles` contains an array with objects of type `IPhaseObj` for every phase.
 
 ## Moon illumination, position and zenith angle
 
@@ -483,7 +530,7 @@ The zenith angle can be used do draw the moon shape from the observers perspecti
  * @param {number} lng longitude for calculating moon-position
  * @return {IMoonData} result object of moon-illumination
  */
-SunCalc.getMoonData(dateValue, lat, lng)
+SunCalc.getMoonData(dateValue, lat, lng);
 ```
 
 Returns an object with the following properties:
@@ -516,7 +563,7 @@ The `IMoonIllumination` object is the same as the `SunCalc.getMoonIllumination` 
  * @param {boolean} [inUTC] defines if the calculation should be in utc or local time (default is local)
  * @return {IMoonTimes} result object of sunTime
  */
-SunCalc.getMoonTimes(dateValue, lat, lng, inUTC)
+SunCalc.getMoonTimes(dateValue, lat, lng, inUTC);
 ```
 
 Returns an object with the following properties:
@@ -528,13 +575,15 @@ Returns an object with the following properties:
  * @property {Date|NaN} set - a Date object if the moon is setting on the given Date, otherwise NaN
  * @property {boolean} alwaysUp - is true if the moon never rises/sets and is always _above_ the horizon during the day
  * @property {boolean} alwaysDown - is true if the moon is always _below_ the horizon
+ * @property {Date} [highest] - Date object with the time when the moon is highest (only present if the moon both rises and sets)
  */
 ```
 
-By default, it will search for moon rise and set during local user's day (frou 0 to 24 hours).
+By default, it will search for moon rise and set during local user's day (from 0 to 24 hours).
 If `inUTC` is set to true, it will instead search the specified date from 0 to 24 UTC hours.
 
 ### Moon transit
+
 ```javascript
 /**
  * calculated the moon transit
@@ -544,8 +593,9 @@ If `inUTC` is set to true, it will instead search the specified date from 0 to 2
  * @param {number} lng longitude for calculating moon-times
  * @returns {IMoonTransit}
  */
-SunCalc.moonTransit(rise, set, lat, lng)
+SunCalc.moonTransit(rise, set, lat, lng);
 ```
+
 Returns an object with the following properties:
 
 ```javascript
