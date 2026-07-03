@@ -55,6 +55,50 @@ export function getPosition(dateValue: number | Date, lat: number, lng: number):
 }
 
 const NAME_EXP = /^(?![0-9])[a-zA-Z0-9$_]+$/;
+const RESERVED_TIME_NAMES = new Set(["__proto__", "constructor", "nadir", "prototype", "solarNoon"]);
+
+function isValidTimeName(name: unknown): name is string {
+  return typeof name === "string" && name.length > 0 && NAME_EXP.test(name) && !RESERVED_TIME_NAMES.has(name);
+}
+
+function hasTimeName(name: string, timeList: readonly ISunTimeNames[]): boolean {
+  return timeList.some((time) => name === time.riseName || name === time.setName);
+}
+
+function hasDeprecatedTimeName(name: string): boolean {
+  return timesDeprecated.some(([deprecatedName]) => deprecatedName === name);
+}
+
+function buildTimesList(customTimes: readonly ISunTimeNames[] | undefined): readonly ISunTimeNames[] {
+  if (!customTimes) {
+    return times;
+  }
+
+  const customNames = new Set<string>();
+  for (const timeEntry of customTimes) {
+    const time = timeEntry as Partial<ISunTimeNames> | null;
+    if (time === null || typeof time !== "object" || typeof time.angle !== "number" || !Number.isFinite(time.angle)) {
+      throw new Error("invalid custom time");
+    }
+    if (!isValidTimeName(time.riseName) || !isValidTimeName(time.setName) || time.riseName === time.setName) {
+      throw new Error("invalid custom time name");
+    }
+    if (
+      hasTimeName(time.riseName, times) ||
+      hasTimeName(time.setName, times) ||
+      hasDeprecatedTimeName(time.riseName) ||
+      hasDeprecatedTimeName(time.setName) ||
+      customNames.has(time.riseName) ||
+      customNames.has(time.setName)
+    ) {
+      throw new Error("custom time name already in use");
+    }
+    customNames.add(time.riseName);
+    customNames.add(time.setName);
+  }
+
+  return [...times, ...customTimes];
+}
 
 /**
  * Adds a custom sun time definition to the process-global list used by {@link getSunTimes}.
@@ -82,18 +126,21 @@ export function addTime(
     riseName.length > 0 &&
     typeof setName === "string" &&
     setName.length > 0 &&
-    typeof angleAltitude === "number";
+    typeof angleAltitude === "number" &&
+    Number.isFinite(angleAltitude);
 
   if (!isValid) {
     return false;
   }
 
+  if (!isValidTimeName(riseName) || !isValidTimeName(setName) || riseName === setName) {
+    return false;
+  }
+
   for (const time of times) {
     if (
-      !NAME_EXP.test(riseName) ||
       riseName === time.riseName ||
       riseName === time.setName ||
-      !NAME_EXP.test(setName) ||
       setName === time.riseName ||
       setName === time.setName
     ) {
@@ -132,10 +179,14 @@ export function addDeprecatedTimeName(alternateName: string, originalName: strin
     return false;
   }
 
+  if (!isValidTimeName(alternateName) || hasDeprecatedTimeName(alternateName)) {
+    return false;
+  }
+
   let hasOrg = false;
 
   for (const time of times) {
-    if (!NAME_EXP.test(alternateName) || alternateName === time.riseName || alternateName === time.setName) {
+    if (alternateName === time.riseName || alternateName === time.setName) {
       return false;
     }
     if (originalName === time.riseName || originalName === time.setName) {
@@ -179,7 +230,7 @@ export function getSunTimes(
     t.setHours(12, 0, 0, 0);
   }
 
-  const timesList: readonly ISunTimeNames[] = customTimes ? [...times, ...customTimes] : times;
+  const timesList = buildTimesList(customTimes);
 
   const lw = rad * -lng;
   const phi = rad * lat;
@@ -319,11 +370,11 @@ export function getSunTime(
   inUTC = false
 ): ISunTimeSingle {
   validateLatLng(lat, lng);
-  if (typeof elevationAngle !== "number" || isNaN(elevationAngle)) {
+  if (typeof elevationAngle !== "number" || !Number.isFinite(elevationAngle)) {
     throw new Error("elevationAngle missing");
   }
 
-  const angle = degree ? elevationAngle * rad : elevationAngle;
+  const angle = degree ? elevationAngle : elevationAngle * degr;
   const t = new Date(toTimestamp(dateValue));
 
   if (inUTC) {
@@ -425,6 +476,13 @@ export function getSunTimeByAzimuth(
  * @param utcOffset UTC offset of the observer in hours
  */
 export function getSolarTime(dateValue: number | Date, lng: number, utcOffset: number): Date {
+  if (typeof lng !== "number" || isNaN(lng)) {
+    throw new Error("longitude missing");
+  }
+  if (lng < -180 || lng > 180) {
+    throw new RangeError(`longitude out of range [-180, 180]: ${String(lng)}`);
+  }
+
   const date = new Date(toTimestamp(dateValue));
 
   const start = new Date(date.getFullYear(), 0, 0);

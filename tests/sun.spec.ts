@@ -176,6 +176,21 @@ describe("getSunTimes", () => {
     expect(customDusk!.ts).toBeGreaterThan(sunTimes.blueHourDuskEnd!.ts);
     expect(customDusk!.ts).toBeLessThan(sunTimes.nauticalDusk!.ts);
   });
+
+  it("rejects invalid or colliding per-call custom time names", () => {
+    expect(() =>
+      getSunTimes(date, lat, lng, 0, false, false, [{ angle: -10, riseName: "__proto__", setName: "customDusk" }])
+    ).toThrow("invalid custom time name");
+    expect(() =>
+      getSunTimes(date, lat, lng, 0, false, false, [{ angle: -10, riseName: "solarNoon", setName: "customDusk" }])
+    ).toThrow("invalid custom time name");
+    expect(() =>
+      getSunTimes(date, lat, lng, 0, false, false, [{ angle: -10, riseName: "sunriseStart", setName: "customDusk" }])
+    ).toThrow("custom time name already in use");
+    expect(() =>
+      getSunTimes(date, lat, lng, 0, false, false, [{ angle: -10, riseName: "customDawn", setName: "customDawn" }])
+    ).toThrow("invalid custom time name");
+  });
 });
 
 describe("getTimes (deprecated SunCalc-compatible wrapper)", () => {
@@ -208,6 +223,16 @@ describe("getSunTime", () => {
 
     expect(time.rise.value.toUTCString()).toBe(new Date(heightTestTimes.sunriseStart!).toUTCString());
     expect(time.set.value.toUTCString()).toBe(new Date(heightTestTimes.sunsetEnd!).toUTCString());
+  });
+
+  it("treats degree and radian elevation inputs consistently", () => {
+    const fromDegrees = getSunTime(date, lat, lng, -10, 0, true);
+    const fromRadians = getSunTime(date, lat, lng, (-10 * Math.PI) / 180);
+
+    expect(fromDegrees.rise.value.getTime()).toBe(fromRadians.rise.value.getTime());
+    expect(fromDegrees.set.value.getTime()).toBe(fromRadians.set.value.getTime());
+    expect(fromDegrees.rise.elevation).toBe(-10);
+    expect(fromRadians.rise.elevation).toBe(-10);
   });
 });
 

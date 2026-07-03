@@ -1,5 +1,5 @@
 import { moonCycles } from "./constants.js";
-import type { IMoonData, IMoonIllumination, IMoonPosition, IMoonTimes, IPhaseObj } from "./types.js";
+import type { IMoonData, IMoonIllumination, IMoonPosition, IMoonTimes, IMoonTransit, IPhaseObj } from "./types.js";
 import {
   altitudeCalc,
   astroRefraction,
@@ -23,6 +23,11 @@ const cos = Math.cos;
 const tan = Math.tan;
 const atan = Math.atan2;
 const acos = Math.acos;
+
+function optionalTimestamp(dateValue: number | Date): number {
+  const timestamp = dateValue instanceof Date ? dateValue.getTime() : dateValue;
+  return typeof timestamp === "number" && Number.isFinite(timestamp) ? timestamp : NaN;
+}
 
 /**
  * Calculates the position of the moon for the given date and geoposition.
@@ -262,22 +267,16 @@ export function getMoonTimes(dateValue: number | Date, lat: number, lng: number,
  * @param lat latitude of the observer in degrees
  * @param lng longitude of the observer in degrees
  */
-export function moonTransit(
-  rise: number | Date,
-  set: number | Date,
-  lat: number,
-  lng: number
-): { main: Date | null; invert: Date | null } {
-  let main: Date | null = null;
-  let invert: Date | null = null;
+export function moonTransit(rise: number | Date, set: number | Date, lat: number, lng: number): IMoonTransit {
+  let main: Date | number = NaN;
+  let invert: Date | number = NaN;
 
-  const riseDate = new Date(rise);
-  const setDate = new Date(set);
-  const riseValue = riseDate.getTime();
-  const setValue = setDate.getTime();
-  const day = setDate.getDate();
+  const riseValue = optionalTimestamp(rise);
+  const setValue = optionalTimestamp(set);
+  const hasRise = Number.isFinite(riseValue);
+  const hasSet = Number.isFinite(setValue);
 
-  if (rise && set) {
+  if (hasRise && hasSet) {
     if (riseValue < setValue) {
       main = calcMoonTransit(riseValue, setValue);
     } else {
@@ -285,26 +284,40 @@ export function moonTransit(
     }
   }
 
-  if (rise) {
-    const nextDaySet = getMoonTimes(new Date(riseDate).setDate(day + 1), lat, lng).set;
-    const tempTransitAfter = calcMoonTransit(riseValue, nextDaySet instanceof Date ? nextDaySet.getTime() : nextDaySet);
-    if (tempTransitAfter.getDate() === day) {
-      if (main) {
-        invert = tempTransitAfter;
-      } else {
-        main = tempTransitAfter;
+  if (hasRise) {
+    const riseDate = new Date(riseValue);
+    const day = riseDate.getDate();
+    const nextDate = new Date(riseValue);
+    nextDate.setDate(day + 1);
+
+    const nextDaySet = optionalTimestamp(getMoonTimes(nextDate.valueOf(), lat, lng).set);
+    if (Number.isFinite(nextDaySet)) {
+      const tempTransitAfter = calcMoonTransit(riseValue, nextDaySet);
+      if (Number.isFinite(tempTransitAfter.getTime()) && tempTransitAfter.getDate() === day) {
+        if (main instanceof Date) {
+          invert = tempTransitAfter;
+        } else {
+          main = tempTransitAfter;
+        }
       }
     }
   }
 
-  if (set) {
-    const prevDayRise = getMoonTimes(new Date(setDate).setDate(day - 1), lat, lng).rise;
-    const tempTransitBefore = calcMoonTransit(
-      setValue,
-      prevDayRise instanceof Date ? prevDayRise.getTime() : prevDayRise
-    );
-    if (tempTransitBefore.getDate() === day) {
-      main = tempTransitBefore;
+  if (hasSet) {
+    const setDate = new Date(setValue);
+    const day = setDate.getDate();
+    const prevDate = new Date(setValue);
+    prevDate.setDate(day - 1);
+
+    const prevDayRise = optionalTimestamp(getMoonTimes(prevDate.valueOf(), lat, lng).rise);
+    if (Number.isFinite(prevDayRise)) {
+      const tempTransitBefore = calcMoonTransit(setValue, prevDayRise);
+      if (Number.isFinite(tempTransitBefore.getTime()) && tempTransitBefore.getDate() === day) {
+        if (main instanceof Date) {
+          invert = main;
+        }
+        main = tempTransitBefore;
+      }
     }
   }
 
