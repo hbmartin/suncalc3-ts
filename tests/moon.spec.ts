@@ -129,6 +129,12 @@ describe("moonTransit", () => {
     expect(() => moonTransit(NaN, new Date(Date.UTC(2013, 2, 4, 7, 47, 58)), lat, lng)).not.toThrow();
   });
 
+  it("throws on invalid rise or set dates", () => {
+    expect(() => moonTransit(new Date("nonsense"), NaN, lat, lng)).toThrow("invalid date");
+    expect(() => moonTransit(NaN, new Date("nonsense"), lat, lng)).toThrow("invalid date");
+    expect(() => moonTransit(Infinity, NaN, lat, lng)).toThrow("invalid date");
+  });
+
   it("returns NaN sentinels when no transit can be calculated", () => {
     const transit = moonTransit(NaN, NaN, lat, lng);
 

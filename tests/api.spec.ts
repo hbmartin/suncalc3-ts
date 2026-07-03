@@ -49,9 +49,13 @@ describe("input validation", () => {
     expect(() => getSunTimeByAzimuth(date, lat, lng, NaN)).toThrow("azimuth missing");
   });
 
-  it("validates longitude for solar time", () => {
+  it("validates longitude and utcOffset for solar time", () => {
     expect(() => getSolarTime(date, NaN, 0)).toThrow("longitude missing");
     expect(() => getSolarTime(date, 180.5, 0)).toThrow(RangeError);
+    expect(() => getSolarTime(date, lng, NaN)).toThrow("utcOffset missing");
+    expect(() => getSolarTime(date, lng, Infinity)).toThrow("utcOffset missing");
+    expect(() => getSolarTime(date, lng, -13)).toThrow(RangeError);
+    expect(() => getSolarTime(date, lng, 15)).toThrow(RangeError);
   });
 });
 

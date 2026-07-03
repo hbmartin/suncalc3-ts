@@ -255,8 +255,8 @@ describe("getSunTimeByAzimuth", () => {
 
 describe("getSolarTime", () => {
   it("returns the solar time", () => {
-    const solarTime = getSolarTime(date, lng, 60);
+    const solarTime = getSolarTime(date, lng, 2);
 
-    expect(solarTime.toUTCString()).toBe("Fri, 29 Dec 1899 13:50:00 GMT");
+    expect(solarTime.toUTCString()).toBe("Sun, 31 Dec 1899 23:50:00 GMT");
   });
 });
