@@ -220,3 +220,11 @@ export interface IMoonTimes {
   /** Time at which the moon is highest (only when both rise and set occur) */
   highest?: Date;
 }
+
+/** Moon transit dates as returned by {@link moonTransit}. */
+export interface IMoonTransit {
+  /** Main moon transit date, or NaN if it cannot be calculated */
+  main: Date | number;
+  /** Inverted moon transit date, or NaN if it cannot be calculated */
+  invert: Date | number;
+}

@@ -113,12 +113,27 @@ describe("moonTransit", () => {
     const transit = moonTransit(moonTimes.rise, moonTimes.set, lat, lng);
     const main = transit.main;
 
-    expect(main).not.toBeNull();
+    expect(main).toBeInstanceOf(Date);
     // At the transit the moon should be higher than a few hours before and after.
     const altitudeAt = (when: number): number => getMoonPosition(when, lat, lng).altitude;
-    const t = main!.valueOf();
+    const t = (main as Date).valueOf();
     expect(altitudeAt(t)).toBeGreaterThan(altitudeAt(t - 3 * 3600000));
     expect(altitudeAt(t)).toBeGreaterThan(altitudeAt(t + 3 * 3600000));
+  });
+
+  it("does not throw when rise or set is missing", () => {
+    const transit = moonTransit(new Date(Date.UTC(2013, 2, 4, 23, 54, 29)), NaN, lat, lng);
+
+    expect(transit.main instanceof Date || Number.isNaN(transit.main)).toBe(true);
+    expect(transit.invert instanceof Date || Number.isNaN(transit.invert)).toBe(true);
+    expect(() => moonTransit(NaN, new Date(Date.UTC(2013, 2, 4, 7, 47, 58)), lat, lng)).not.toThrow();
+  });
+
+  it("returns NaN sentinels when no transit can be calculated", () => {
+    const transit = moonTransit(NaN, NaN, lat, lng);
+
+    expect(Number.isNaN(transit.main as number)).toBe(true);
+    expect(Number.isNaN(transit.invert as number)).toBe(true);
   });
 });
 
