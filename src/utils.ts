@@ -144,7 +144,7 @@ export function calcMoonTransit(rize: number, set: number): Date {
  */
 export function toTimestamp(dateValue: number | Date): number {
   const timestamp = dateValue instanceof Date ? dateValue.valueOf() : dateValue;
-  if (typeof timestamp !== "number" || isNaN(timestamp)) {
+  if (typeof timestamp !== "number" || !Number.isFinite(timestamp)) {
     throw new TypeError(`invalid date: ${String(dateValue)}`);
   }
   return timestamp;

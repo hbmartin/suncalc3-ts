@@ -6,6 +6,7 @@ import {
   getMoonPosition,
   getMoonTimes,
   getPosition,
+  getSolarTime,
   getSunTime,
   getSunTimeByAzimuth,
   getSunTimes,
@@ -38,12 +39,19 @@ describe("input validation", () => {
   it("throws on invalid dates", () => {
     expect(() => getPosition(new Date("nonsense"), lat, lng)).toThrow("invalid date");
     expect(() => getSunTimes(NaN, lat, lng)).toThrow("invalid date");
+    expect(() => getSunTimes(Infinity, lat, lng)).toThrow("invalid date");
     expect(() => getMoonIllumination(new Date("nonsense"))).toThrow("invalid date");
   });
 
   it("throws when required angles are missing", () => {
     expect(() => getSunTime(date, lat, lng, NaN)).toThrow("elevationAngle missing");
+    expect(() => getSunTime(date, lat, lng, Infinity)).toThrow("elevationAngle missing");
     expect(() => getSunTimeByAzimuth(date, lat, lng, NaN)).toThrow("azimuth missing");
+  });
+
+  it("validates longitude for solar time", () => {
+    expect(() => getSolarTime(date, NaN, 0)).toThrow("longitude missing");
+    expect(() => getSolarTime(date, 180.5, 0)).toThrow(RangeError);
   });
 });
 
@@ -52,6 +60,8 @@ describe("addTime", () => {
     expect(addTime(-5, "sunriseStart", "someSet")).toBe(false);
     expect(addTime(-5, "someRise", "sunsetEnd")).toBe(false);
     expect(addTime(-5, "1nvalid", "someSet")).toBe(false);
+    expect(addTime(-5, "__proto__", "someSet")).toBe(false);
+    expect(addTime(-5, "sameName", "sameName")).toBe(false);
     expect(addTime(-5, "", "someSet")).toBe(false);
   });
 
@@ -76,11 +86,13 @@ describe("addDeprecatedTimeName", () => {
   it("rejects aliases for unknown time names", () => {
     expect(addDeprecatedTimeName("myAlias", "noSuchTime")).toBe(false);
     expect(addDeprecatedTimeName("", "sunriseStart")).toBe(false);
+    expect(addDeprecatedTimeName("__proto__", "sunriseStart")).toBe(false);
     expect(addDeprecatedTimeName("sunsetEnd", "sunriseStart")).toBe(false);
   });
 
   it("registers an alias that is resolved by getSunTimes", () => {
     expect(addDeprecatedTimeName("mySunrise", "sunriseStart")).toBe(true);
+    expect(addDeprecatedTimeName("mySunrise", "sunriseStart")).toBe(false);
 
     const sunTimes = getSunTimes(date, lat, lng, 0, true) as unknown as Record<string, ISunTimeDef>;
     expect(sunTimes.mySunrise).toBeDefined();
