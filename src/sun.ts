@@ -482,6 +482,12 @@ export function getSolarTime(dateValue: number | Date, lng: number, utcOffset: n
   if (lng < -180 || lng > 180) {
     throw new RangeError(`longitude out of range [-180, 180]: ${String(lng)}`);
   }
+  if (typeof utcOffset !== "number" || !Number.isFinite(utcOffset)) {
+    throw new Error("utcOffset missing");
+  }
+  if (utcOffset < -12 || utcOffset > 14) {
+    throw new RangeError(`utcOffset out of range [-12, 14]: ${String(utcOffset)}`);
+  }
 
   const date = new Date(toTimestamp(dateValue));
 

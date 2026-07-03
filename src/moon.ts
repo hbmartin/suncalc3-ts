@@ -25,8 +25,21 @@ const atan = Math.atan2;
 const acos = Math.acos;
 
 function optionalTimestamp(dateValue: number | Date): number {
-  const timestamp = dateValue instanceof Date ? dateValue.getTime() : dateValue;
-  return typeof timestamp === "number" && Number.isFinite(timestamp) ? timestamp : NaN;
+  if (dateValue instanceof Date) {
+    const timestamp = dateValue.getTime();
+    if (!Number.isFinite(timestamp)) {
+      throw new TypeError(`invalid date: ${String(dateValue)}`);
+    }
+    return timestamp;
+  }
+
+  if (Number.isNaN(dateValue)) {
+    return NaN;
+  }
+  if (typeof dateValue !== "number" || !Number.isFinite(dateValue)) {
+    throw new TypeError(`invalid date: ${String(dateValue)}`);
+  }
+  return dateValue;
 }
 
 /**
