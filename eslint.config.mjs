@@ -4,8 +4,20 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
+  {
+    ignores: [
+      "package.json",
+      "eslint.config.mjs",
+      "prettier.config.mjs",
+      "node_modules/*",
+      "coverage/*",
+      "docs/*",
+      "dist/*",
+    ],
+  },
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -21,22 +33,6 @@ export default tseslint.config(
   },
   prettierConfig,
   {
-    ignores: [
-      "package.json",
-      "eslint.config.mjs",
-      "prettier.config.mjs",
-      "node_modules/*",
-      ".yarn/*",
-      "dist/*",
-    ],
-  },
-  {
-    files: ["src/interfaces/models/**/*.ts"],
-    rules: {
-      "@typescript-eslint/no-empty-object-type": "off",
-    },
-  },
-  {
     files: ["**/*.ts"],
     rules: {
       "@typescript-eslint/no-unused-vars": [
@@ -48,6 +44,15 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+    },
+  },
+  {
+    // Tests intentionally exercise deprecated APIs and index into results
+    // whose presence they assert.
+    files: ["tests/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-deprecated": "off",
     },
   }
 );

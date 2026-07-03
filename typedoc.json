@@ -1,0 +1,11 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/index.ts"],
+	"out": "docs",
+	"name": "suncalc3-ts",
+	"includeVersion": true,
+	"excludeInternal": true,
+	"navigationLinks": {
+		"GitHub": "https://github.com/hbmartin/suncalc3-ts"
+	}
+}
