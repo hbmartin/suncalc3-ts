@@ -67,6 +67,7 @@ import { getSunTimes, getMoonIllumination } from "suncalc3-ts";
     - [Type Safety](#type-safety)
     - [Modularization and Exports](#modularization-and-exports)
 - [Changes from SunCalc to SunCalc3](#changes-from-suncalc-to-suncalc3)
+- [Contributors](#contributors)
 - [Reference](#reference)
     - [Sunlight times](#sunlight-times)
         - [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
@@ -139,6 +140,10 @@ import { getSunTimes, getMoonIllumination } from "suncalc3-ts";
 Additionally, the output of most functions is changed to objects with more properties, and JSDoc plus TypeScript definitions are provided.
 
 If you are migrating from the original SunCalc, the deprecated `getTimes(date, lat, lng, height?, inUTC?)` wrapper returns a plain map of `Date`s keyed by both the current and the original SunCalc names.
+
+## Contributors
+
+[![Profile images of all the contributors](https://contrib.rocks/image?repo=hbmartin/suncalc3-ts)](https://github.com/hbmartin/suncalc3-ts/graphs/contributors)
 
 ## Reference
 
@@ -605,3 +610,13 @@ Returns an object with the following properties:
  * @property {Date|NaN} invert - the inverted moon transit date
  */
 ```
+
+## History
+
+* [SunCalc](https://github.com/mourner/suncalc/) was first created by [@mourner](https://github.com/mourner) on Aug 25, 2011
+* [SunCalc](https://github.com/mourner/suncalc/) stopped being maintained after the 1.9.0 release on February 6, 2022
+* [SunCalc3](https://github.com/Hypnos3/suncalc3/) was forked by [Hypnos3](https://github.com/Hypnos3) on March 13, 2022
+* [SunCalc3](https://github.com/Hypnos3/suncalc3/) stopped being maintained after the 2.0.5 release on April 4, 2022
+* [SunCalc TS](https://github.com/e-adrien/suncalc-ts) was forked by [@e-adrien](https://github.com/e-adrien/) from [suncalc2](https://github.com/andiling/suncalc2) on May 15, 2024
+* [SunCalc3-TS](https://github.com/hbmartin/suncalc3-ts/) was forked by [@hbmartin](https://github.com/hbmartin/) from SunCalc3 on June 26, 2025
+  * The development setup including CI, configurations, etc was copied from SunCalc TS
