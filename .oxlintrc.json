@@ -1,0 +1,54 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"env": {
+		"es2022": true,
+		"node": true
+	},
+	"ignorePatterns": ["dist/**", "coverage/**", "docs/**", "node_modules/**"],
+	"plugins": ["eslint", "typescript", "oxc", "unicorn", "vitest", "node"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "error",
+		"perf": "warn"
+	},
+	"rules": {
+		"no-unused-vars": [
+			"error",
+			{
+				"args": "all",
+				"argsIgnorePattern": "^_",
+				"caughtErrors": "all",
+				"caughtErrorsIgnorePattern": "^_"
+			}
+		],
+		"typescript/no-deprecated": "error",
+		"typescript/no-non-null-assertion": "error",
+		"vitest/expect-expect": [
+			"error",
+			{
+				"assertFunctionNames": [
+					"expect",
+					"expectTypeOf",
+					"assert",
+					"assertType",
+					"near"
+				]
+			}
+		],
+		"vitest/valid-expect": [
+			"error",
+			{
+				"maxArgs": 2
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["tests/**/*.ts"],
+			"rules": {
+				"typescript/no-deprecated": "off",
+				"typescript/no-non-null-assertion": "off"
+			}
+		}
+	]
+}

@@ -17,29 +17,34 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: "11.9.0"
+
       - name: Use Node.js 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "22"
-          cache: npm
+          cache: pnpm
 
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
-      - name: ESLint checks
-        run: npm run eslint-check
+      - name: Oxlint checks
+        run: pnpm run lint
 
-      - name: Prettier checks
-        run: npm run prettier-check
+      - name: Oxfmt checks
+        run: pnpm run format:check
 
       - name: Type checks
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Verify package (publint + arethetypeswrong)
-        run: npm run verify:package
+        run: pnpm run verify:package
 
   tests:
     name: Tests Node.js ${{ matrix.node-version }}
@@ -55,17 +60,22 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: "11.9.0"
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
+          cache: pnpm
 
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests with coverage
-        run: npm run coverage
+        run: pnpm run coverage
 
       - name: Upload coverage to Codecov
         if: matrix.node-version == '22.x'

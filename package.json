@@ -24,6 +24,7 @@
     "node": ">=20"
   },
   "type": "module",
+  "packageManager": "pnpm@11.9.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -42,12 +43,12 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "docs": "typedoc",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "verify:package": "publint && attw --pack . --profile esm-only",
-    "prepublishOnly": "npm run typecheck && npm run test && npm run build && npm run verify:package",
-    "eslint-check": "eslint .",
-    "eslint-fix": "eslint . --fix",
-    "prettier-check": "prettier --check .",
-    "prettier-fix": "prettier --write ."
+    "prepublishOnly": "pnpm run typecheck && pnpm run test && pnpm run build && pnpm run verify:package"
   },
   "files": [
     "src/**/*",
@@ -70,18 +71,14 @@
   ],
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.4",
-    "@eslint/js": "^9.27.0",
-    "@tsconfig/node20": "^20.1.5",
-    "@types/node": "^22.15.24",
-    "@vitest/coverage-v8": "^3.1.4",
-    "eslint": "^9.27.0",
-    "eslint-config-prettier": "^10.1.5",
-    "globals": "^16.2.0",
-    "prettier": "^3.5.3",
+    "@tsconfig/node20": "^20.1.9",
+    "@types/node": "^22.20.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0",
     "publint": "^0.3.21",
-    "typedoc": "^0.28.5",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "8.33.0",
-    "vitest": "^3.1.4"
+    "typedoc": "^0.28.20",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }
