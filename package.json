@@ -21,10 +21,10 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "type": "module",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@11.10.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -43,8 +43,8 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "docs": "typedoc",
-    "lint": "oxlint .",
-    "lint:fix": "oxlint . --fix",
+    "lint": "oxlint --type-aware .",
+    "lint:fix": "oxlint --type-aware . --fix",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "verify:package": "publint && attw --pack . --profile esm-only",
@@ -71,14 +71,15 @@
   ],
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.4",
-    "@tsconfig/node20": "^20.1.9",
+    "@tsconfig/node22": "^22.0.5",
     "@types/node": "^22.20.0",
     "@vitest/coverage-v8": "^4.1.10",
     "oxfmt": "^0.57.0",
     "oxlint": "^1.72.0",
+    "oxlint-tsgolint": "^0.24.0",
     "publint": "^0.3.21",
     "typedoc": "^0.28.20",
-    "typescript": "^6.0.3",
+    "typescript": "~6.0.3",
     "vitest": "^4.1.10"
   }
 }

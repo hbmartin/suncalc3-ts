@@ -1,13 +1,11 @@
 allowBuilds:
   esbuild: true
+# Supply-chain guard: only resolve package versions published at least 3 days
+# ago (in minutes). The excludes below use bare names so they keep applying
+# across version bumps; they exist because we intentionally track fresh
+# releases of the vitest and typedoc toolchains.
+minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
-  - "@vitest/coverage-v8@4.1.10"
-  - "@vitest/expect@4.1.10"
-  - "@vitest/mocker@4.1.10"
-  - "@vitest/pretty-format@4.1.10"
-  - "@vitest/runner@4.1.10"
-  - "@vitest/snapshot@4.1.10"
-  - "@vitest/spy@4.1.10"
-  - "@vitest/utils@4.1.10"
-  - typedoc@0.28.20
-  - vitest@4.1.10
+  - vitest
+  - "@vitest/*"
+  - typedoc

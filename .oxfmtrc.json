@@ -10,11 +10,7 @@
 		"dist/",
 		"coverage/",
 		"docs/",
-		"node_modules/",
-		"reviews_triage/",
-		"triage_decisions.db",
-		".pnp.*",
-		".yarn/*"
+		"node_modules/"
 	],
 	"overrides": [
 		{
