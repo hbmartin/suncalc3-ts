@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`TypeError`) and on out-of-range latitude/longitude (`RangeError`).
 - `exports` map, `sideEffects: false`, source maps, and declaration maps in
   the published package.
-- API documentation generated with TypeDoc (`npm run docs`) and published via
+- API documentation generated with TypeDoc (`pnpm run docs`) and published via
   GitHub Pages.
 - Comprehensive Vitest test suite (sun/moon positions and times, southern
   hemisphere, observer height, polar edge cases, custom times, validation)
@@ -35,8 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom `risePos` / `setPos` values passed to `addTime` (and via
   `customTimes`) are now honored in the calculated `pos` of the results.
 - Moon phase name typo fixed ("third Quarter" → "Third Quarter").
-- Tooling: mocha/ts-node replaced by Vitest; yarn replaced by npm with a
-  committed lockfile; CI runs lint, prettier, typecheck, build, and tests on
+- Tooling: mocha/ts-node replaced by Vitest; yarn/npm replaced by pnpm with a
+  committed lockfile; CI runs Oxlint, Oxfmt, typecheck, build, and tests on
   Node.js 20/22/24; npm publish runs tests first and publishes with
   provenance.
 

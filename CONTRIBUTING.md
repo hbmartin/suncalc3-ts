@@ -5,26 +5,26 @@ set up and what we expect from contributions.
 
 ## Getting started
 
-Requirements: Node.js 20 or newer and npm.
+Requirements: Node.js 20 or newer and pnpm 11.
 
 ```bash
 git clone https://github.com/hbmartin/suncalc3-ts.git
 cd suncalc3-ts
-npm ci
+pnpm install --frozen-lockfile
 ```
 
 ## Development workflow
 
-| Command                  | Purpose                                       |
-| ------------------------ | --------------------------------------------- |
-| `npm test`               | Run the test suite once                       |
-| `npm run test:watch`     | Run the tests in watch mode                   |
-| `npm run coverage`       | Run the tests with a coverage report          |
-| `npm run typecheck`      | Type-check all sources and tests              |
-| `npm run eslint-check`   | Lint (`eslint-fix` to auto-fix)               |
-| `npm run prettier-check` | Check formatting (`prettier-fix` to auto-fix) |
-| `npm run build`          | Compile to `dist/`                            |
-| `npm run docs`           | Generate the API docs with TypeDoc            |
+| Command                 | Purpose                                    |
+| ----------------------- | ------------------------------------------ |
+| `pnpm test`             | Run the test suite once                    |
+| `pnpm run test:watch`   | Run the tests in watch mode                |
+| `pnpm run coverage`     | Run the tests with a coverage report       |
+| `pnpm run typecheck`    | Type-check all sources and tests           |
+| `pnpm run lint`         | Lint (`lint:fix` to auto-fix)              |
+| `pnpm run format:check` | Check formatting (`format` to auto-format) |
+| `pnpm run build`        | Compile to `dist/`                         |
+| `pnpm run docs`         | Generate the API docs with TypeDoc         |
 
 All of these run in CI on every pull request, so please make sure they pass
 locally before pushing.

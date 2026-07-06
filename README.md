@@ -1,11 +1,9 @@
-SunCalc
-=======
+# SunCalc
 
 [![QC Checks](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml/badge.svg)](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml)
-[![codecov](https://codecov.io/gh/hbmartin/suncalc3-ts/graph/badge.svg)](https://codecov.io/gh/hbmartin/suncalc3-ts)
 [![npm version](https://img.shields.io/npm/v/suncalc3-ts.svg)](https://www.npmjs.com/package/suncalc3-ts)
 [![Issues](https://img.shields.io/github/issues/hbmartin/suncalc3-ts.svg?style=flat-square)](https://github.com/hbmartin/suncalc3-ts/issues)
-[![code style](https://img.shields.io/badge/Code%20Style-eslint-green.svg)](https://eslint.org/)
+[![code style](https://img.shields.io/badge/Code%20Style-Oxc-green.svg)](https://oxc.rs/)
 [![License](https://img.shields.io/badge/License-BSD--2--Clause-blue.svg)](./LICENSE)
 
 SunCalc is a tiny BSD-licensed TypeScript library for calculating sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time. Originally created by [Vladimir Agafonkin](http://agafonkin.com/en) ([@mourner](https://github.com/mourner)) as a part of the [SunCalc.net project](http://suncalc.net). Subsequently reworked and enhanced by [@hypnos3](https://github.com/hypnos3). (The output of the function is changed in the most times to objects with enhanced properies.) Further incorporating TypeScript and other quality improvement work from [@e-adrien](https://github.com/e-adrien)'s [suncalc-ts](https://github.com/e-adrien/suncalc-ts). Currently maintained by [@hbmartin](https://github.com/hbmartin/) at [suncalc3-ts](https://github.com/hbmartin/suncalc3-ts).
@@ -63,24 +61,24 @@ import { getSunTimes, getMoonIllumination } from "suncalc3-ts";
 | `addTime(...)`, `addDeprecatedTimeName(...)` _(deprecated)_ | Register process-global custom times — prefer `customTimes`   |
 
 - [Changes from SunCalc3 to SunCalc3-TS](#changes-from-suncalc3-to-suncalc3-ts)
-    - [Modern TypeScript Features](#modern-typescript-features)
-    - [Code Structure Improvements](#code-structure-improvements)
-    - [Type Safety](#type-safety)
-    - [Modularization and Exports](#modularization-and-exports)
+  - [Modern TypeScript Features](#modern-typescript-features)
+  - [Code Structure Improvements](#code-structure-improvements)
+  - [Type Safety](#type-safety)
+  - [Modularization and Exports](#modularization-and-exports)
 - [Changes from SunCalc to SunCalc3](#changes-from-suncalc-to-suncalc3)
 - [Contributors](#contributors)
 - [Reference](#reference)
-    - [Sunlight times](#sunlight-times)
-        - [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
-        - [get specific Sunlight time](#get-specific-sunlight-time)
-        - [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
-        - [getting solar time](#getting-solar-time)
-    - [Sun position](#sun-position)
-    - [Moon position](#moon-position)
-    - [Moon illumination](#moon-illumination)
+  - [Sunlight times](#sunlight-times)
+    - [adding / getting own Sunlight times](#adding-getting-own-sunlight-times)
+    - [get specific Sunlight time](#get-specific-sunlight-time)
+    - [get Sunlight time for a given azimuth angle for a given date](#get-sunlight-time-for-a-given-azimuth-angle-for-a-given-date)
+    - [getting solar time](#getting-solar-time)
+  - [Sun position](#sun-position)
+  - [Moon position](#moon-position)
+  - [Moon illumination](#moon-illumination)
 - [Moon illumination, position and zenith angle](#moon-illumination-position-and-zenith-angle)
-    - [Moon rise and set times](#moon-rise-and-set-times)
-    - [Moon transit](#moon-transit)
+  - [Moon rise and set times](#moon-rise-and-set-times)
+  - [Moon transit](#moon-transit)
 
 ## Changes from SunCalc3 to SunCalc3-TS
 
@@ -303,10 +301,10 @@ SunCalc.addTime(angleInDegrees, riseName, setName, risePos, setPos);
 Adds a custom time when the sun reaches the given angle to results returned by `SunCalc.getSunTimes`.
 
 - the function tests for validity of the given parameters
-    - `riseName` and `setName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
-    - `angleInDegrees` must be a number
-    - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
-    - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
+  - `riseName` and `setName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+  - `angleInDegrees` must be a number
+  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+  - `riseName` and `setName` must not correspond to a `riseName` or `setName` already in the array `SunCalc.times`
 
 Additional this function removes all items from `SunCalc.timesDeprecated` array where the `riseName` or `setName` matches the `alternameName` to prevent errors.
 
@@ -337,9 +335,9 @@ SunCalc.addDeprecatedTimeName(alternameName, originalName);
 Add a deprecated name
 
 - the function tests for validity of the given parameters
-    - `alternameName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
-    - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
-    - `alternameName` must not correspond to a `riseName` or `setName` in the array `SunCalc.times`
+  - `alternameName` must be a non empty `string` and match the regex `/^(?![0-9])[a-zA-Z0-9$_]+$/`
+  - `originalName` must be in the array `SunCalc.times` as `riseName` or `setName`
+  - `alternameName` must not correspond to a `riseName` or `setName` in the array `SunCalc.times`
 
 `SunCalc.timesDeprecated` property contains all deprecated time names as an `Array.<[string, string]>` - `Array.<deprecatedname, originalName>`.
 
@@ -620,4 +618,4 @@ Returns an object with the following properties:
 - [SunCalc3](https://github.com/Hypnos3/suncalc3/) stopped being maintained after the 2.0.5 release on April 4, 2022
 - [SunCalc TS](https://github.com/e-adrien/suncalc-ts) was forked by [@e-adrien](https://github.com/e-adrien/) from [suncalc2](https://github.com/andiling/suncalc2) on May 15, 2024
 - [SunCalc3-TS](https://github.com/hbmartin/suncalc3-ts/) was forked by [@hbmartin](https://github.com/hbmartin/) from SunCalc3 on June 26, 2025
-    - The development setup including CI, configurations, etc was copied from SunCalc TS
+  - The development setup including CI, configurations, etc was copied from SunCalc TS

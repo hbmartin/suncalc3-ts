@@ -86,6 +86,7 @@ describe("getMoonTimes", () => {
 
   it("flags days near the pole on which the moon never rises or never sets", () => {
     const flags = { alwaysUp: 0, alwaysDown: 0 };
+    let alwaysUpTimesAreInvalid = true;
 
     // Over a full lunar declination cycle near the pole, the moon is
     // above the horizon for whole days and below it for whole days.
@@ -93,8 +94,7 @@ describe("getMoonTimes", () => {
       const moonTimes = getMoonTimes(new Date(Date.UTC(2013, 2, day)), 89.5, 0, true);
       if (moonTimes.alwaysUp) {
         flags.alwaysUp++;
-        expect(Number.isNaN(moonTimes.rise as number)).toBe(true);
-        expect(Number.isNaN(moonTimes.set as number)).toBe(true);
+        alwaysUpTimesAreInvalid &&= Number.isNaN(moonTimes.rise as number) && Number.isNaN(moonTimes.set as number);
       }
       if (moonTimes.alwaysDown) {
         flags.alwaysDown++;
@@ -103,6 +103,7 @@ describe("getMoonTimes", () => {
     }
 
     expect(flags.alwaysUp).toBeGreaterThan(0);
+    expect(alwaysUpTimesAreInvalid).toBe(true);
     expect(flags.alwaysDown).toBeGreaterThan(0);
   });
 });
