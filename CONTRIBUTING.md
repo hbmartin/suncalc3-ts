@@ -5,7 +5,10 @@ set up and what we expect from contributions.
 
 ## Getting started
 
-Requirements: Node.js 20 or newer and pnpm 11.
+Requirements: Node.js 22.12 or newer (the oxlint/oxfmt toolchain does not
+support earlier 22.x releases) and pnpm 11 — the exact pnpm version is pinned
+by the `packageManager` field in `package.json`, so `corepack enable` will
+provision it for you.
 
 ```bash
 git clone https://github.com/hbmartin/suncalc3-ts.git

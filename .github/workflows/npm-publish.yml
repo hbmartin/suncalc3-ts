@@ -16,10 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
+      # pnpm version comes from the packageManager field in package.json.
       - name: Setup pnpm
         uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
-        with:
-          version: "11.9.0"
 
       - name: Use Node.js 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -29,14 +28,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # prepublishOnly (typecheck, test, build, verify:package) runs as part
+      # of `pnpm publish` below, so only lint is needed as an extra gate.
       - run: pnpm run lint
-
-      - run: pnpm run test
-
-      - run: pnpm run build
-
-      - run: pnpm run verify:package
 
       # Authenticates via OIDC trusted publishing (no token); the repository
       # and this workflow must be registered as a trusted publisher on npmjs.com.
-      - run: pnpm publish --provenance
+      # --no-git-checks: release events check out the tag as a detached HEAD,
+      # which pnpm's default branch/clean checks would reject.
+      - run: pnpm publish --provenance --no-git-checks

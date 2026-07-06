@@ -36,8 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `customTimes`) are now honored in the calculated `pos` of the results.
 - Moon phase name typo fixed ("third Quarter" → "Third Quarter").
 - Tooling: mocha/ts-node replaced by Vitest; yarn/npm replaced by pnpm with a
-  committed lockfile; CI runs Oxlint, Oxfmt, typecheck, build, and tests on
-  Node.js 20/22/24; npm publish runs tests first and publishes with
+  committed lockfile (version pinned once via `packageManager`, with a
+  3-day `minimumReleaseAge` supply-chain gate); CI runs type-aware Oxlint
+  (via `oxlint-tsgolint`), Oxfmt, typecheck, build, and tests on
+  Node.js 22/24; npm publish runs the quality gates once and publishes with
   provenance.
 
 ### Fixed

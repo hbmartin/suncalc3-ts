@@ -17,7 +17,7 @@ and [the planets](http://aa.quae.nl/en/reken/hemelpositie.html). You can read ab
 npm install suncalc3-ts
 ```
 
-The package is published as an ES module with full TypeScript type definitions and requires Node.js 20 or newer (or any modern bundler/browser toolchain).
+The package is published as an ES module with full TypeScript type definitions and requires Node.js 22 or newer (or any modern bundler/browser toolchain).
 
 ## Usage example
 
