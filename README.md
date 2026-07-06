@@ -2,6 +2,7 @@ SunCalc
 =======
 
 [![QC Checks](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml/badge.svg)](https://github.com/hbmartin/suncalc3-ts/actions/workflows/quality-control.yml)
+[![codecov](https://codecov.io/gh/hbmartin/suncalc3-ts/graph/badge.svg)](https://codecov.io/gh/hbmartin/suncalc3-ts)
 [![npm version](https://img.shields.io/npm/v/suncalc3-ts.svg)](https://www.npmjs.com/package/suncalc3-ts)
 [![Issues](https://img.shields.io/github/issues/hbmartin/suncalc3-ts.svg?style=flat-square)](https://github.com/hbmartin/suncalc3-ts/issues)
 [![code style](https://img.shields.io/badge/Code%20Style-eslint-green.svg)](https://eslint.org/)
@@ -613,10 +614,10 @@ Returns an object with the following properties:
 
 ## History
 
-* [SunCalc](https://github.com/mourner/suncalc/) was first created by [@mourner](https://github.com/mourner) on Aug 25, 2011
-* [SunCalc](https://github.com/mourner/suncalc/) stopped being maintained after the 1.9.0 release on February 6, 2022
-* [SunCalc3](https://github.com/Hypnos3/suncalc3/) was forked by [Hypnos3](https://github.com/Hypnos3) on March 13, 2022
-* [SunCalc3](https://github.com/Hypnos3/suncalc3/) stopped being maintained after the 2.0.5 release on April 4, 2022
-* [SunCalc TS](https://github.com/e-adrien/suncalc-ts) was forked by [@e-adrien](https://github.com/e-adrien/) from [suncalc2](https://github.com/andiling/suncalc2) on May 15, 2024
-* [SunCalc3-TS](https://github.com/hbmartin/suncalc3-ts/) was forked by [@hbmartin](https://github.com/hbmartin/) from SunCalc3 on June 26, 2025
-  * The development setup including CI, configurations, etc was copied from SunCalc TS
+- [SunCalc](https://github.com/mourner/suncalc/) was first created by [@mourner](https://github.com/mourner) on Aug 25, 2011
+- [SunCalc](https://github.com/mourner/suncalc/) stopped being maintained after the 1.9.0 release on February 6, 2022
+- [SunCalc3](https://github.com/Hypnos3/suncalc3/) was forked by [Hypnos3](https://github.com/Hypnos3) on March 13, 2022
+- [SunCalc3](https://github.com/Hypnos3/suncalc3/) stopped being maintained after the 2.0.5 release on April 4, 2022
+- [SunCalc TS](https://github.com/e-adrien/suncalc-ts) was forked by [@e-adrien](https://github.com/e-adrien/) from [suncalc2](https://github.com/andiling/suncalc2) on May 15, 2024
+- [SunCalc3-TS](https://github.com/hbmartin/suncalc3-ts/) was forked by [@hbmartin](https://github.com/hbmartin/) from SunCalc3 on June 26, 2025
+    - The development setup including CI, configurations, etc was copied from SunCalc TS
